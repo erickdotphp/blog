@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Env on Erick BLog</title>
+    <link>http://erickdotphp.github.io/categories/env/</link>
+    <description>Recent content in Env on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Wed, 16 Mar 2016 22:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/categories/env/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>PHP SSH2 扩展</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</link>
+            <pubDate>Wed, 16 Mar 2016 22:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</guid>
+            <description>
+
+&lt;h3 id=&#34;安装:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装&lt;/h3&gt;
+
+&lt;h4 id=&#34;下载包:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;下载包&lt;/h4&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&#34;&gt;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://pecl.php.net/get/ssh2-0.12.tgz&#34;&gt;http://pecl.php.net/get/ssh2-0.12.tgz&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;先安装-libssh2-再安装-ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;先安装 libssh2 再安装 SSH2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf libssh2-1.4.2.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd libssh2-1.4.2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/libssh2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;安装ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装ssh2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf ssh2-0.12.tgz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd ssh2-0.12&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ /usr/local/zend/bin/phpize&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/ssh2 --with-ssh2=/usr/local/libssh2 --with-php-config=/usr/local/zend/bin/php-config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;修改php.ini 加入&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;extension=ssh2.so&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;重启Zend Server&lt;/p&gt;
+
+&lt;h3 id=&#34;调试:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;调试&lt;/h3&gt;
+
+&lt;h5 id=&#34;用户名密码方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用户名密码方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$user=&amp;quot;root&amp;quot;;//远程用户名
+$pass=&amp;quot;123456&amp;quot;;//远程密码
+$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+ssh2_auth_password($connection,$user,$pass);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;用sshkey方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用sshkey方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+if(ssh2_auth_pubkey_file($connection, &#39;root&#39;, &#39;/home/id_rsa.pub&#39;, &#39;/home/id_rsa&#39;, &#39;secret&#39;))
+{
+    echo &amp;quot;Public Key Authentication Successful\n&amp;quot;;
+} else {    
+    die(&#39;Public Key Authentication Failed&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;执行命令获取返回值:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;执行命令获取返回值&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$cmd=&amp;quot;ps aux&amp;quot;;//命令
+$ret=ssh2_exec($connection,$cmd);
+stream_set_blocking($ret, true);
+echo (stream_get_contents($ret));
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 Composer</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/</link>
+            <pubDate>Mon, 01 Feb 2016 12:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/</guid>
+            <description>
+
+&lt;p&gt;安装前请确保 环境中有PHP
+可以用&lt;code&gt;php -v&lt;/code&gt;查看&lt;/p&gt;
+
+&lt;h4 id=&#34;下载:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;下载&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ curl -sS https://getcomposer.org/installer| php -- --install-dir=/home&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;移动到可执行目录:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;移动到可执行目录&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv composer.phar /usr/local/bin/composer&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;配置环境变量:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;配置环境变量&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ export PATH=$PATH:/usr/local/bin&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 mariadb</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/</link>
+            <pubDate>Mon, 01 Feb 2016 11:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/</guid>
+            <description>
+
+&lt;h3 id=&#34;全部删除mysql-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;全部删除MySQL/MariaDB&lt;/h3&gt;
+
+&lt;p&gt;MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;
+* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用rpm -e &amp;ndash;nodeps mariadb-*全部删除：
+* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；&lt;/p&gt;
+
+&lt;h3 id=&#34;添加mariadb的yum源:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;添加MariaDB的yum源&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建 /etc/yum.repos.d/MariaDB.repo：&lt;/li&gt;
+&lt;li&gt;添加yum源,该文件中添加如图所示内容：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# MariaDB 10.1 CentOS repository list - created 2015-11-19 02:26 UTC
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.0/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;安装-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;安装 MariaDB&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ yum install MariaDB-server MariaDB-client&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;启动-配置mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;启动、配置MariaDB&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ service mysql start&lt;/code&gt;
+&lt;code&gt;$ mysql_secure_installation&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Lumen 环境搭建</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+            <pubDate>Mon, 01 Feb 2016 11:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+            <description>
+
+&lt;h3 id=&#34;安装composer:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;安装composer&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ curl -sS https://getcomposer.org/installer | php -- --install-dir=lumen&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;全局使用:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;全局使用&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv composer.phar /usr/local/bin/composer&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;配置path:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;配置PATH&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ export PATH=~/.composer/vendor/bin:$PATH&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装lumen:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;安装lumen&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ composer global require &amp;quot;laravel/lumen-installer&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;设置nginx:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;设置nginx&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+listen  80;
+server_name www.lumen.loc;
+set $root_path &#39;/home/wwwroot/lumen/public&#39;;  
+root $root_path;
+index index.php index.html index.htm;  
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+location ~ (index|get|static|report|404|503)\.php$ {
+    try_files $uri =404;
+    fastcgi_pass   fastcgi_backend;
+
+    fastcgi_param  PHP_FLAG  &amp;quot;session.auto_start=off \n suhosin.session.cryptua=off&amp;quot;;
+    fastcgi_param  PHP_VALUE &amp;quot;memory_limit=256M \n max_execution_time=600&amp;quot;;
+    fastcgi_read_timeout 600s;
+    fastcgi_connect_timeout 600s;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    include        fastcgi_params;
+}
+    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+        root $root_path;  
+    }
+    location ~ /\.ht {
+        deny all;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;修改hosts:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;修改hosts&lt;/h3&gt;
+
+&lt;p&gt;/etc/hosts&lt;/p&gt;
+
+&lt;h3 id=&#34;composer-重新加载类库:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;composer 重新加载类库&lt;/h3&gt;
+
+&lt;p&gt;php composer.phar dump-autoload&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 ZendServer</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</link>
+            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</guid>
+            <description>
+
+&lt;h3 id=&#34;获取官方包:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;获取官方包&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ wget http://downloads.zend.com/zendserver/8.5.1/ZendServer-8.5.1-RepositoryInstaller-linux.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;关闭防火墙:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;关闭防火墙&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ vim /etc/selinux/config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;SELINUX=disabled&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ setenforce 0&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装zendserver:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;安装ZendServer&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;./install_zs.sh 5.6 nginx&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;远程访问不到zend-server-需要关闭iptable:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;远程访问不到zend server 需要关闭iptable&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ service iptables status&lt;/code&gt;
+&lt;code&gt;$ service iptables stop&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置文件的路径如下:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;配置文件的路径如下&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;nginx  vim /etc/nginx/nginx.conf&lt;/li&gt;
+&lt;li&gt;php /usr/local/zend/etc/php.ini&lt;/li&gt;
+&lt;li&gt;fpm /usr/local/zend/etc/php-fpm.conf&lt;/li&gt;
+&lt;li&gt;虚拟机 /usr/local/zend/etc/sites.d&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;都配置好以后可以访问主机地址了:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;都配置好以后可以访问主机地址了&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://localhost:10081/ZendServer/&#34;&gt;http://localhost:10081/ZendServer/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;另外破解方法:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;另外破解方法&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;vim /usr/local/zend/gui/module/Configuration/src/Configuration/License/License.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;所有判断改成return true;&lt;/p&gt;
+
+&lt;h3 id=&#34;faq:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;FAQ&lt;/h3&gt;
+
+&lt;p&gt;Nginx 报错 no port in upstream &amp;ldquo;fastcgi_backend&amp;rdquo;,因为没有配置fastcgi
+在/etc/nginx/nginx.conf在&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;access_log  /var/log/nginx/access.log  main;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;后面加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    fastcgi_read_timeout 300;
+    upstream fastcgi_backend {
+       server   unix:/usr/local/zend/tmp/php-fpm.sock;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中fastcgi_read_timeout 300;是为了防止ngxin 504超时错误&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Linux常用命令</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</link>
+            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</guid>
+            <description>
+
+&lt;h3 id=&#34;linux:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Linux&lt;/h3&gt;
+
+&lt;h4 id=&#34;文件传输:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;文件传输&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;从服务器上下载文件
+&lt;code&gt;scp username@servername:/path/filename /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如scp root@192.168.0.101:/var/www/test.txt  把192.168.0.101上的/var/www/test.
+txt 的文件下载到/var/www/local_dir（本地目录）&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上传本地文件到服务器
+&lt;code&gt;scp /path/filename username@servername:/path&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如scp /var/www/test.php  root@192.168.0.101:/var/www/  把本机/var/www/目录下的test.php文件上传到192.168.0.101这台服务器上的/var/www/目录中&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;从服务器下载整个目录
+&lt;code&gt;scp -r username@servername:/var/www/remote_dir/（远程目录） /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如:scp -r root@192.168.0.101:/var/www/test  /var/www/&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上传目录到服务器
+&lt;code&gt;scp  -r local_dir username@servername:remote_dir&lt;/code&gt;
+例如：scp -r test  root@192.168.0.101:/var/www/   把当前目录下的test目录上传到服务器的/var/www/ 目录&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

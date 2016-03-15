@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Zend Server on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/zend-server/</link>
+    <description>Recent content in Zend Server on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Mon, 01 Feb 2016 10:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/zend-server/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 ZendServer</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</link>
+            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</guid>
+            <description>
+
+&lt;h3 id=&#34;获取官方包:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;获取官方包&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ wget http://downloads.zend.com/zendserver/8.5.1/ZendServer-8.5.1-RepositoryInstaller-linux.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;关闭防火墙:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;关闭防火墙&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ vim /etc/selinux/config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;SELINUX=disabled&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ setenforce 0&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装zendserver:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;安装ZendServer&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;./install_zs.sh 5.6 nginx&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;远程访问不到zend-server-需要关闭iptable:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;远程访问不到zend server 需要关闭iptable&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ service iptables status&lt;/code&gt;
+&lt;code&gt;$ service iptables stop&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置文件的路径如下:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;配置文件的路径如下&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;nginx  vim /etc/nginx/nginx.conf&lt;/li&gt;
+&lt;li&gt;php /usr/local/zend/etc/php.ini&lt;/li&gt;
+&lt;li&gt;fpm /usr/local/zend/etc/php-fpm.conf&lt;/li&gt;
+&lt;li&gt;虚拟机 /usr/local/zend/etc/sites.d&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;都配置好以后可以访问主机地址了:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;都配置好以后可以访问主机地址了&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://localhost:10081/ZendServer/&#34;&gt;http://localhost:10081/ZendServer/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;另外破解方法:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;另外破解方法&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;vim /usr/local/zend/gui/module/Configuration/src/Configuration/License/License.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;所有判断改成return true;&lt;/p&gt;
+
+&lt;h3 id=&#34;faq:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;FAQ&lt;/h3&gt;
+
+&lt;p&gt;Nginx 报错 no port in upstream &amp;ldquo;fastcgi_backend&amp;rdquo;,因为没有配置fastcgi
+在/etc/nginx/nginx.conf在&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;access_log  /var/log/nginx/access.log  main;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;后面加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    fastcgi_read_timeout 300;
+    upstream fastcgi_backend {
+       server   unix:/usr/local/zend/tmp/php-fpm.sock;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中fastcgi_read_timeout 300;是为了防止ngxin 504超时错误&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

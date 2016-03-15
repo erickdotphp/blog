@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/linux/</link>
+    <description>Recent content in Linux on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Mon, 01 Feb 2016 10:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Linux常用命令</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</link>
+            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</guid>
+            <description>
+
+&lt;h3 id=&#34;linux:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Linux&lt;/h3&gt;
+
+&lt;h4 id=&#34;文件传输:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;文件传输&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;从服务器上下载文件
+&lt;code&gt;scp username@servername:/path/filename /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如scp root@192.168.0.101:/var/www/test.txt  把192.168.0.101上的/var/www/test.
+txt 的文件下载到/var/www/local_dir（本地目录）&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上传本地文件到服务器
+&lt;code&gt;scp /path/filename username@servername:/path&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如scp /var/www/test.php  root@192.168.0.101:/var/www/  把本机/var/www/目录下的test.php文件上传到192.168.0.101这台服务器上的/var/www/目录中&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;从服务器下载整个目录
+&lt;code&gt;scp -r username@servername:/var/www/remote_dir/（远程目录） /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如:scp -r root@192.168.0.101:/var/www/test  /var/www/&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上传目录到服务器
+&lt;code&gt;scp  -r local_dir username@servername:remote_dir&lt;/code&gt;
+例如：scp -r test  root@192.168.0.101:/var/www/   把当前目录下的test目录上传到服务器的/var/www/ 目录&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

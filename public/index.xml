@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Erick BLog</title>
+    <link>http://erickdotphp.github.io/</link>
+    <description>Recent content on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Wed, 16 Mar 2016 22:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>PHP SSH2 扩展</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</link>
+            <pubDate>Wed, 16 Mar 2016 22:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</guid>
+            <description>
+
+&lt;h3 id=&#34;安装:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装&lt;/h3&gt;
+
+&lt;h4 id=&#34;下载包:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;下载包&lt;/h4&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&#34;&gt;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://pecl.php.net/get/ssh2-0.12.tgz&#34;&gt;http://pecl.php.net/get/ssh2-0.12.tgz&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;先安装-libssh2-再安装-ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;先安装 libssh2 再安装 SSH2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf libssh2-1.4.2.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd libssh2-1.4.2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/libssh2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;安装ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装ssh2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf ssh2-0.12.tgz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd ssh2-0.12&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ /usr/local/zend/bin/phpize&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/ssh2 --with-ssh2=/usr/local/libssh2 --with-php-config=/usr/local/zend/bin/php-config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;修改php.ini 加入&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;extension=ssh2.so&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;重启Zend Server&lt;/p&gt;
+
+&lt;h3 id=&#34;调试:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;调试&lt;/h3&gt;
+
+&lt;h5 id=&#34;用户名密码方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用户名密码方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$user=&amp;quot;root&amp;quot;;//远程用户名
+$pass=&amp;quot;123456&amp;quot;;//远程密码
+$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+ssh2_auth_password($connection,$user,$pass);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;用sshkey方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用sshkey方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+if(ssh2_auth_pubkey_file($connection, &#39;root&#39;, &#39;/home/id_rsa.pub&#39;, &#39;/home/id_rsa&#39;, &#39;secret&#39;))
+{
+    echo &amp;quot;Public Key Authentication Successful\n&amp;quot;;
+} else {    
+    die(&#39;Public Key Authentication Failed&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;执行命令获取返回值:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;执行命令获取返回值&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$cmd=&amp;quot;ps aux&amp;quot;;//命令
+$ret=ssh2_exec($connection,$cmd);
+stream_set_blocking($ret, true);
+echo (stream_get_contents($ret));
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Digital Ocean API整理</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/15/digital-ocean-api%E6%95%B4%E7%90%86/</link>
+            <pubDate>Tue, 15 Mar 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/15/digital-ocean-api%E6%95%B4%E7%90%86/</guid>
+            <description>
+
+&lt;h3 id=&#34;请求类型:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;请求类型&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;GET&lt;/strong&gt; 只读请求，不需要验证，不会影响查询对象&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;DELETE&lt;/strong&gt; 删除操作&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;PUT&lt;/strong&gt; 更新操作&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;POST&lt;/strong&gt; 新增操作&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;HEAD&lt;/strong&gt; 只返回GET查询的head部分用于查询metadata&lt;/p&gt;
+
+&lt;h3 id=&#34;需要理解的几个词:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;需要理解的几个词&lt;/h3&gt;
+
+&lt;h4 id=&#34;account:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Account&lt;/h4&gt;
+
+&lt;p&gt;账户，包括基本信息，状态，水滴上限等等&lt;/p&gt;
+
+&lt;h4 id=&#34;droplet:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Droplet&lt;/h4&gt;
+
+&lt;p&gt;水滴（暂时这么翻译吧），可以理解为容器，Ocean的基本单位&lt;/p&gt;
+
+&lt;h4 id=&#34;image:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Image&lt;/h4&gt;
+
+&lt;p&gt;镜像，给Droplet使用的，可以作为备份，快照，或者是基础镜像&lt;/p&gt;
+
+&lt;h4 id=&#34;actions:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Actions&lt;/h4&gt;
+
+&lt;p&gt;类似于日志的东西&lt;/p&gt;
+
+&lt;h4 id=&#34;regions:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Regions&lt;/h4&gt;
+
+&lt;p&gt;区域，Digital Ocean 数据中心所在地，镜像可以在不同的区域之间切换&lt;/p&gt;
+
+&lt;h4 id=&#34;slug:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Slug&lt;/h4&gt;
+
+&lt;p&gt;区域的唯一标示，human-readable&lt;/p&gt;
+
+&lt;h4 id=&#34;size:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Size&lt;/h4&gt;
+
+&lt;p&gt;硬件配置信息，一组配置信息包括内存，磁盘，区域CPU数量等信息。&lt;/p&gt;
+
+&lt;h4 id=&#34;floating-ip:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Floating IP&lt;/h4&gt;
+
+&lt;p&gt;公网可访问的静态IP，跟容器绑定&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Git 多远端问题</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/14/git-%E5%A4%9A%E8%BF%9C%E7%AB%AF%E9%97%AE%E9%A2%98/</link>
+            <pubDate>Mon, 14 Mar 2016 18:22:14 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/14/git-%E5%A4%9A%E8%BF%9C%E7%AB%AF%E9%97%AE%E9%A2%98/</guid>
+            <description>
+
+&lt;p&gt;如果需要在同一套代码中控制多个远程版本&lt;/p&gt;
+
+&lt;h4 id=&#34;查看当前的远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;查看当前的远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git remote -v&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;增加远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;增加远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git remote add 远端名 远端git地址&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样推送和拉取的之后只要在后面加上远端名和分支名就可以&lt;/p&gt;
+
+&lt;h4 id=&#34;拉取远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;拉取远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git pull inter master&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;推送远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;推送远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git push inter master&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>这个博客是怎么搭建起来的</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/13/%E8%BF%99%E4%B8%AA%E5%8D%9A%E5%AE%A2%E6%98%AF%E6%80%8E%E4%B9%88%E6%90%AD%E5%BB%BA%E8%B5%B7%E6%9D%A5%E7%9A%84/</link>
+            <pubDate>Sun, 13 Mar 2016 18:22:14 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/13/%E8%BF%99%E4%B8%AA%E5%8D%9A%E5%AE%A2%E6%98%AF%E6%80%8E%E4%B9%88%E6%90%AD%E5%BB%BA%E8%B5%B7%E6%9D%A5%E7%9A%84/</guid>
+            <description>
+
+&lt;h2 id=&#34;大概原理:32ab7241d48fcc174c877413a917f8cf&#34;&gt;大概原理&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先hugo，用来生成博客的静态文件
+hugo是用go语言写的，效率比较高&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;把生成好的静态页面通过github pages 上传到github上&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;就做好了&lt;/p&gt;
+
+&lt;h2 id=&#34;安装:32ab7241d48fcc174c877413a917f8cf&#34;&gt;安装&lt;/h2&gt;
+
+&lt;p&gt;可以直接下载可执行文件 linux windows都有
+官网地址 &lt;a href=&#34;https://gohugo.io/&#34;&gt;https://gohugo.io/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;创建新的站点:32ab7241d48fcc174c877413a917f8cf&#34;&gt;创建新的站点&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ hugo new site blog&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;会生成一个文件夹，里面的config.toml是配置文件
+这是一个TOML文件，全称是Tom’s Obvious, Minimal Language，这是它的作者GitHub联合创始人Tom Preston-Werner 觉得YAML不够优雅，捣鼓出来的一个新格式。如果你不喜欢这种格式，你可以将config.toml替换为YAML格式的config.yaml，或者json格式的config.json。hugo都支持。&lt;/p&gt;
+
+&lt;h2 id=&#34;创建新页面:32ab7241d48fcc174c877413a917f8cf&#34;&gt;创建新页面&lt;/h2&gt;
+
+&lt;p&gt;cd 到 blog下&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ hugo new about.md&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样会把文件生成在contents目录下&lt;/p&gt;
+
+&lt;p&gt;也可以放在文件夹下&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ hugo new post/first.md&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;md就是markdown格式，很方便&lt;/p&gt;
+
+&lt;p&gt;默认是没有模板的，可以去下载模板&lt;/p&gt;
+
+&lt;p&gt;地址是 &lt;a href=&#34;https://github.com/spf13/hugoThemes&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;找好模板之后
+创建themes文件夹&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ mkdir themes&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;$ git clone &lt;a href=&#34;https://github.com/spf13/模板名.git&#34;&gt;https://github.com/spf13/模板名.git&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;启动本地服务器:32ab7241d48fcc174c877413a917f8cf&#34;&gt;启动本地服务器&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ hugo server --theme=base16 --buildDrafts --watch&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;watch 是监控文章更新  buildDrafts是生成content里面的页面&lt;/p&gt;
+
+&lt;h2 id=&#34;生成静态站点:32ab7241d48fcc174c877413a917f8cf&#34;&gt;生成静态站点&lt;/h2&gt;
+
+&lt;p&gt;在blog目录下&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ hugo --theme=base16 --buildDrafts&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;生成好以后把public里面的文件上传到github上就可以了&lt;/p&gt;
+
+&lt;p&gt;参考文章
+&lt;a href=&#34;http://www.gohugo.org/&#34;&gt;http://www.gohugo.org/&lt;/a&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Git的常用么命令</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/git%E7%9A%84%E5%B8%B8%E7%94%A8%E4%B9%88%E5%91%BD%E4%BB%A4/</link>
+            <pubDate>Mon, 01 Feb 2016 18:22:14 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/git%E7%9A%84%E5%B8%B8%E7%94%A8%E4%B9%88%E5%91%BD%E4%BB%A4/</guid>
+            <description>
+
+&lt;h4 id=&#34;生成密钥:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;生成密钥&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;ssh-keygen&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;添加公钥到git账户:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;添加公钥到git账户&lt;/h4&gt;
+
+&lt;h4 id=&#34;检测是否成功:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;检测是否成功&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;ssh -T git@github.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;获取代码:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;获取代码&lt;/h4&gt;
+
+&lt;p&gt;git clone git://github.com:xxxx/test.git 以gitreadonly方式克隆到本地，只可以读&lt;/p&gt;
+
+&lt;p&gt;git clone git@github.com:xxx/test.git  ##以SSH方式克隆到本地，可以读写&lt;/p&gt;
+
+&lt;p&gt;git clone &lt;a href=&#34;https://github.com/xxx/test.git&#34;&gt;https://github.com/xxx/test.git&lt;/a&gt; ##以https方式克隆到本地，可以读写&lt;/p&gt;
+
+&lt;p&gt;git fetch git@github.com:xxx/xxx.git  ##获取到本地但不合并&lt;/p&gt;
+
+&lt;p&gt;git pull git@github.com:xxx/xxx.git ##获取并合并内容到本地&lt;/p&gt;
+
+&lt;h4 id=&#34;本地配置:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;本地配置&lt;/h4&gt;
+
+&lt;p&gt;git config &amp;ndash;global user.name &amp;lsquo;ed&amp;rsquo;&lt;br /&gt;
+git config &amp;ndash;global user.email &amp;lsquo;erickdotphp@gmail.com&amp;rsquo; #全局联系方式，可选&lt;/p&gt;
+
+&lt;h4 id=&#34;新建git项目并提交到github:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;新建Git项目并提交到Github&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;mkdir testdir &amp;amp; cd testdir&lt;/code&gt;
+&lt;code&gt;touch README.md&lt;/code&gt;
+* git init #初始化一个本地库&lt;br /&gt;
+* git add README.md #添加文件到本地仓库&lt;br /&gt;
+* git rm README.md #本地倒库内删除&lt;br /&gt;
+* git commit -m &amp;ldquo;first commit&amp;rdquo; #提交到本地库并备注，此时变更仍在本地。&lt;br /&gt;
+* git commit -a  ##自动更新变化的文件，a可以理解为auto&lt;br /&gt;
+* git remote add xxx git@github.com:xxx/xxx.git  #增加一个远程服务器的别名。&lt;br /&gt;
+* git remote rm xxx   ##删除远程版本库的别名&lt;br /&gt;
+* git push -u remotename master&lt;/p&gt;
+
+&lt;p&gt;将本地文件提交到Github的remoname版本库中。此时才更新了本地变更到github服务上。&lt;/p&gt;
+
+&lt;h4 id=&#34;创建和合并分支:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;创建和合并分支&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;git branch #显示当前分支是master&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git branch new-feature  #创建分支&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git checkout new-feature  #切换到新分支&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;vi page_cache.inc.php&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git add page_cache.inc.php&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git commit -a -m &amp;ldquo;added initial version of page cache&amp;rdquo;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git push origin new-feature  ##把分支提交到远程服务器，只是把分支结构和内容提交到远程，并没有发生和主干的合并行为。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;如果new-feature分支成熟了-觉得有必要合并进master:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;如果new-feature分支成熟了，觉得有必要合并进master&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;git checkout master  #切换到新主干&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git merge new-feature  ##把分支合并到主干&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git branch #显示当前分支是master&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git push  #此时主干中也合并了new-feature的代码&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;忽略某个文件更新的命令:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;忽略某个文件更新的命令&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;git update-index --assume-unchanged&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 Composer</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/</link>
+            <pubDate>Mon, 01 Feb 2016 12:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/</guid>
+            <description>
+
+&lt;p&gt;安装前请确保 环境中有PHP
+可以用&lt;code&gt;php -v&lt;/code&gt;查看&lt;/p&gt;
+
+&lt;h4 id=&#34;下载:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;下载&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ curl -sS https://getcomposer.org/installer| php -- --install-dir=/home&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;移动到可执行目录:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;移动到可执行目录&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv composer.phar /usr/local/bin/composer&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;配置环境变量:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;配置环境变量&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ export PATH=$PATH:/usr/local/bin&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装和配置 Sublime Text3</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-sublime-text3/</link>
+            <pubDate>Mon, 01 Feb 2016 12:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-sublime-text3/</guid>
+            <description>
+
+&lt;h3 id=&#34;下载最新的包:156810766b2e870ff15329801f943416&#34;&gt;下载最新的包&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.sublimetext.com/3&#34;&gt;http://www.sublimetext.com/3&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下载tarball&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar jxvf sublime_text_3_build_3083_x64.tar.bz2  -C /opt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;移动到系统目录:156810766b2e870ff15329801f943416&#34;&gt;移动到系统目录&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv sublime_text_3 /opt/&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;创建连接:156810766b2e870ff15329801f943416&#34;&gt;创建连接&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ ln -s /opt/sublime_text_3/sublime_text /usr/bin/sublime&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;移动到系统目录下:156810766b2e870ff15329801f943416&#34;&gt;移动到系统目录下&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ cp /opt/sublime_text_3/sublime_text.desktop /usr/share/applications&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;修改配置文件:156810766b2e870ff15329801f943416&#34;&gt;修改配置文件&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd /usr/share/applications&lt;/code&gt;
+&lt;code&gt;$ vim sublime_text.desktop&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Sublime Text
+GenericName=Text Editor
+Comment=Sophisticated text editor for code, markup and prose
+Exec=/opt/sublime_text_3/sublime_text %F
+Terminal=false
+MimeType=text/plain;
+Icon=/opt/sublime_text_3/Icon/48x48/sublime-text.png
+Categories=TextEditor;Development;
+StartupNotify=true
+Actions=Window;Document;
+
+[Desktop Action Window]
+Name=New Window
+Exec=/opt/sublime_text_3/sublime_text -n
+OnlyShowIn=Unity;
+
+[Desktop Action Document]
+Name=New File
+Exec=/opt/sublime_text_3/sublime_text --command new_file
+OnlyShowIn=Unity;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这些都做完以后 sublime的快捷方式会出现在   应用程序=&amp;gt;编程 里面&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 mariadb</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/</link>
+            <pubDate>Mon, 01 Feb 2016 11:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/</guid>
+            <description>
+
+&lt;h3 id=&#34;全部删除mysql-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;全部删除MySQL/MariaDB&lt;/h3&gt;
+
+&lt;p&gt;MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;
+* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用rpm -e &amp;ndash;nodeps mariadb-*全部删除：
+* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；&lt;/p&gt;
+
+&lt;h3 id=&#34;添加mariadb的yum源:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;添加MariaDB的yum源&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建 /etc/yum.repos.d/MariaDB.repo：&lt;/li&gt;
+&lt;li&gt;添加yum源,该文件中添加如图所示内容：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# MariaDB 10.1 CentOS repository list - created 2015-11-19 02:26 UTC
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.0/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;安装-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;安装 MariaDB&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ yum install MariaDB-server MariaDB-client&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;启动-配置mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;启动、配置MariaDB&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ service mysql start&lt;/code&gt;
+&lt;code&gt;$ mysql_secure_installation&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Lumen 环境搭建</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+            <pubDate>Mon, 01 Feb 2016 11:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+            <description>
+
+&lt;h3 id=&#34;安装composer:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;安装composer&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ curl -sS https://getcomposer.org/installer | php -- --install-dir=lumen&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;全局使用:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;全局使用&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv composer.phar /usr/local/bin/composer&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;配置path:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;配置PATH&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ export PATH=~/.composer/vendor/bin:$PATH&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装lumen:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;安装lumen&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ composer global require &amp;quot;laravel/lumen-installer&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;设置nginx:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;设置nginx&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+listen  80;
+server_name www.lumen.loc;
+set $root_path &#39;/home/wwwroot/lumen/public&#39;;  
+root $root_path;
+index index.php index.html index.htm;  
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+location ~ (index|get|static|report|404|503)\.php$ {
+    try_files $uri =404;
+    fastcgi_pass   fastcgi_backend;
+
+    fastcgi_param  PHP_FLAG  &amp;quot;session.auto_start=off \n suhosin.session.cryptua=off&amp;quot;;
+    fastcgi_param  PHP_VALUE &amp;quot;memory_limit=256M \n max_execution_time=600&amp;quot;;
+    fastcgi_read_timeout 600s;
+    fastcgi_connect_timeout 600s;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    include        fastcgi_params;
+}
+    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+        root $root_path;  
+    }
+    location ~ /\.ht {
+        deny all;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;修改hosts:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;修改hosts&lt;/h3&gt;
+
+&lt;p&gt;/etc/hosts&lt;/p&gt;
+
+&lt;h3 id=&#34;composer-重新加载类库:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;composer 重新加载类库&lt;/h3&gt;
+
+&lt;p&gt;php composer.phar dump-autoload&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 ZendServer</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</link>
+            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</guid>
+            <description>
+
+&lt;h3 id=&#34;获取官方包:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;获取官方包&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ wget http://downloads.zend.com/zendserver/8.5.1/ZendServer-8.5.1-RepositoryInstaller-linux.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;关闭防火墙:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;关闭防火墙&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ vim /etc/selinux/config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;SELINUX=disabled&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ setenforce 0&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装zendserver:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;安装ZendServer&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;./install_zs.sh 5.6 nginx&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;远程访问不到zend-server-需要关闭iptable:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;远程访问不到zend server 需要关闭iptable&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ service iptables status&lt;/code&gt;
+&lt;code&gt;$ service iptables stop&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置文件的路径如下:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;配置文件的路径如下&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;nginx  vim /etc/nginx/nginx.conf&lt;/li&gt;
+&lt;li&gt;php /usr/local/zend/etc/php.ini&lt;/li&gt;
+&lt;li&gt;fpm /usr/local/zend/etc/php-fpm.conf&lt;/li&gt;
+&lt;li&gt;虚拟机 /usr/local/zend/etc/sites.d&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;都配置好以后可以访问主机地址了:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;都配置好以后可以访问主机地址了&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://localhost:10081/ZendServer/&#34;&gt;http://localhost:10081/ZendServer/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;另外破解方法:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;另外破解方法&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;vim /usr/local/zend/gui/module/Configuration/src/Configuration/License/License.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;所有判断改成return true;&lt;/p&gt;
+
+&lt;h3 id=&#34;faq:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;FAQ&lt;/h3&gt;
+
+&lt;p&gt;Nginx 报错 no port in upstream &amp;ldquo;fastcgi_backend&amp;rdquo;,因为没有配置fastcgi
+在/etc/nginx/nginx.conf在&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;access_log  /var/log/nginx/access.log  main;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;后面加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    fastcgi_read_timeout 300;
+    upstream fastcgi_backend {
+       server   unix:/usr/local/zend/tmp/php-fpm.sock;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中fastcgi_read_timeout 300;是为了防止ngxin 504超时错误&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Linux常用命令</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</link>
+            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</guid>
+            <description>
+
+&lt;h3 id=&#34;linux:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Linux&lt;/h3&gt;
+
+&lt;h4 id=&#34;文件传输:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;文件传输&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;从服务器上下载文件
+&lt;code&gt;scp username@servername:/path/filename /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如scp root@192.168.0.101:/var/www/test.txt  把192.168.0.101上的/var/www/test.
+txt 的文件下载到/var/www/local_dir（本地目录）&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上传本地文件到服务器
+&lt;code&gt;scp /path/filename username@servername:/path&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如scp /var/www/test.php  root@192.168.0.101:/var/www/  把本机/var/www/目录下的test.php文件上传到192.168.0.101这台服务器上的/var/www/目录中&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;从服务器下载整个目录
+&lt;code&gt;scp -r username@servername:/var/www/remote_dir/（远程目录） /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例如:scp -r root@192.168.0.101:/var/www/test  /var/www/&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上传目录到服务器
+&lt;code&gt;scp  -r local_dir username@servername:remote_dir&lt;/code&gt;
+例如：scp -r test  root@192.168.0.101:/var/www/   把当前目录下的test目录上传到服务器的/var/www/ 目录&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

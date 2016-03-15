@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ssh2 on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/ssh2/</link>
+    <description>Recent content in Ssh2 on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Wed, 16 Mar 2016 22:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/ssh2/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>PHP SSH2 扩展</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</link>
+            <pubDate>Wed, 16 Mar 2016 22:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</guid>
+            <description>
+
+&lt;h3 id=&#34;安装:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装&lt;/h3&gt;
+
+&lt;h4 id=&#34;下载包:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;下载包&lt;/h4&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&#34;&gt;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://pecl.php.net/get/ssh2-0.12.tgz&#34;&gt;http://pecl.php.net/get/ssh2-0.12.tgz&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;先安装-libssh2-再安装-ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;先安装 libssh2 再安装 SSH2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf libssh2-1.4.2.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd libssh2-1.4.2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/libssh2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;安装ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装ssh2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf ssh2-0.12.tgz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd ssh2-0.12&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ /usr/local/zend/bin/phpize&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/ssh2 --with-ssh2=/usr/local/libssh2 --with-php-config=/usr/local/zend/bin/php-config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;修改php.ini 加入&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;extension=ssh2.so&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;重启Zend Server&lt;/p&gt;
+
+&lt;h3 id=&#34;调试:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;调试&lt;/h3&gt;
+
+&lt;h5 id=&#34;用户名密码方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用户名密码方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$user=&amp;quot;root&amp;quot;;//远程用户名
+$pass=&amp;quot;123456&amp;quot;;//远程密码
+$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+ssh2_auth_password($connection,$user,$pass);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;用sshkey方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用sshkey方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+if(ssh2_auth_pubkey_file($connection, &#39;root&#39;, &#39;/home/id_rsa.pub&#39;, &#39;/home/id_rsa&#39;, &#39;secret&#39;))
+{
+    echo &amp;quot;Public Key Authentication Successful\n&amp;quot;;
+} else {    
+    die(&#39;Public Key Authentication Failed&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;执行命令获取返回值:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;执行命令获取返回值&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$cmd=&amp;quot;ps aux&amp;quot;;//命令
+$ret=ssh2_exec($connection,$cmd);
+stream_set_blocking($ret, true);
+echo (stream_get_contents($ret));
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

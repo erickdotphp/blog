@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/git/</link>
+    <description>Recent content in Git on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Mon, 14 Mar 2016 18:22:14 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Git 多远端问题</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/14/git-%E5%A4%9A%E8%BF%9C%E7%AB%AF%E9%97%AE%E9%A2%98/</link>
+            <pubDate>Mon, 14 Mar 2016 18:22:14 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/14/git-%E5%A4%9A%E8%BF%9C%E7%AB%AF%E9%97%AE%E9%A2%98/</guid>
+            <description>
+
+&lt;p&gt;如果需要在同一套代码中控制多个远程版本&lt;/p&gt;
+
+&lt;h4 id=&#34;查看当前的远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;查看当前的远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git remote -v&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;增加远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;增加远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git remote add 远端名 远端git地址&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样推送和拉取的之后只要在后面加上远端名和分支名就可以&lt;/p&gt;
+
+&lt;h4 id=&#34;拉取远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;拉取远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git pull inter master&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;推送远端:56be543ab91584ac2e975495154d6bb4&#34;&gt;推送远端&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ git push inter master&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Git的常用么命令</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/git%E7%9A%84%E5%B8%B8%E7%94%A8%E4%B9%88%E5%91%BD%E4%BB%A4/</link>
+            <pubDate>Mon, 01 Feb 2016 18:22:14 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/git%E7%9A%84%E5%B8%B8%E7%94%A8%E4%B9%88%E5%91%BD%E4%BB%A4/</guid>
+            <description>
+
+&lt;h4 id=&#34;生成密钥:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;生成密钥&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;ssh-keygen&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;添加公钥到git账户:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;添加公钥到git账户&lt;/h4&gt;
+
+&lt;h4 id=&#34;检测是否成功:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;检测是否成功&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;ssh -T git@github.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;获取代码:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;获取代码&lt;/h4&gt;
+
+&lt;p&gt;git clone git://github.com:xxxx/test.git 以gitreadonly方式克隆到本地，只可以读&lt;/p&gt;
+
+&lt;p&gt;git clone git@github.com:xxx/test.git  ##以SSH方式克隆到本地，可以读写&lt;/p&gt;
+
+&lt;p&gt;git clone &lt;a href=&#34;https://github.com/xxx/test.git&#34;&gt;https://github.com/xxx/test.git&lt;/a&gt; ##以https方式克隆到本地，可以读写&lt;/p&gt;
+
+&lt;p&gt;git fetch git@github.com:xxx/xxx.git  ##获取到本地但不合并&lt;/p&gt;
+
+&lt;p&gt;git pull git@github.com:xxx/xxx.git ##获取并合并内容到本地&lt;/p&gt;
+
+&lt;h4 id=&#34;本地配置:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;本地配置&lt;/h4&gt;
+
+&lt;p&gt;git config &amp;ndash;global user.name &amp;lsquo;ed&amp;rsquo;&lt;br /&gt;
+git config &amp;ndash;global user.email &amp;lsquo;erickdotphp@gmail.com&amp;rsquo; #全局联系方式，可选&lt;/p&gt;
+
+&lt;h4 id=&#34;新建git项目并提交到github:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;新建Git项目并提交到Github&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;mkdir testdir &amp;amp; cd testdir&lt;/code&gt;
+&lt;code&gt;touch README.md&lt;/code&gt;
+* git init #初始化一个本地库&lt;br /&gt;
+* git add README.md #添加文件到本地仓库&lt;br /&gt;
+* git rm README.md #本地倒库内删除&lt;br /&gt;
+* git commit -m &amp;ldquo;first commit&amp;rdquo; #提交到本地库并备注，此时变更仍在本地。&lt;br /&gt;
+* git commit -a  ##自动更新变化的文件，a可以理解为auto&lt;br /&gt;
+* git remote add xxx git@github.com:xxx/xxx.git  #增加一个远程服务器的别名。&lt;br /&gt;
+* git remote rm xxx   ##删除远程版本库的别名&lt;br /&gt;
+* git push -u remotename master&lt;/p&gt;
+
+&lt;p&gt;将本地文件提交到Github的remoname版本库中。此时才更新了本地变更到github服务上。&lt;/p&gt;
+
+&lt;h4 id=&#34;创建和合并分支:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;创建和合并分支&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;git branch #显示当前分支是master&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git branch new-feature  #创建分支&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git checkout new-feature  #切换到新分支&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;vi page_cache.inc.php&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git add page_cache.inc.php&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git commit -a -m &amp;ldquo;added initial version of page cache&amp;rdquo;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git push origin new-feature  ##把分支提交到远程服务器，只是把分支结构和内容提交到远程，并没有发生和主干的合并行为。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;如果new-feature分支成熟了-觉得有必要合并进master:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;如果new-feature分支成熟了，觉得有必要合并进master&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;git checkout master  #切换到新主干&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git merge new-feature  ##把分支合并到主干&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git branch #显示当前分支是master&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;git push  #此时主干中也合并了new-feature的代码&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;忽略某个文件更新的命令:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;忽略某个文件更新的命令&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;git update-index --assume-unchanged&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

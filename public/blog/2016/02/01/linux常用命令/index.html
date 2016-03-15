@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Linux常用命令">
+    <meta name="author" content="erickdotphp">
+
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Linux常用命令 &middot; Erick BLog</title>
+
+   	
+    
+        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/journal.css">
+    
+
+    <link rel="stylesheet" href="http://erickdotphp.github.io/css/font-awesome.min.css">
+
+   	
+   	<link rel="stylesheet" href="http://erickdotphp.github.io/css/style.css">
+
+
+    
+    <script src="http://erickdotphp.github.io/js/jquery.min-2.1.4.js"></script>
+    <script src="http://erickdotphp.github.io/js/bootstrap.min-3.3.5.js"></script>
+
+    
+    <link href="" rel="alternate" type="application/rss+xml" title="Erick BLog" />
+</head>
+<body lang="en">
+    
+    <div class="container">
+    <div class="row">
+        <div class="navbar navbar-default " role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://erickdotphp.github.io">Erick BLog</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://erickdotphp.github.io">Home</a></li>
+                    <li><a href="http://erickdotphp.github.io/post/">Blog</a></li>
+                    
+                    <li><a href="https://github.com/erickdotphp" target="_blank"><img width="16px"  src="/img/git.ico"/></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<h3>Linux常用命令</h3>
+				<span class="label label-primary">2016年02月01日</span> in 
+				
+					
+					<a href="/categories/env">env</a>
+				 using tags
+				
+					
+					<a href="/tags/linux">Linux</a>
+				
+			</small>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<br>
+			
+
+<h3 id="linux:34fe9f2d9cc3cd7e319ca75e7da08332">Linux</h3>
+
+<h4 id="文件传输:34fe9f2d9cc3cd7e319ca75e7da08332">文件传输</h4>
+
+<ul>
+<li>从服务器上下载文件
+<code>scp username@servername:/path/filename /var/www/local_dir（本地目录）</code></li>
+</ul>
+
+<p>例如scp root@192.168.0.101:/var/www/test.txt  把192.168.0.101上的/var/www/test.
+txt 的文件下载到/var/www/local_dir（本地目录）</p>
+
+<ul>
+<li>上传本地文件到服务器
+<code>scp /path/filename username@servername:/path</code></li>
+</ul>
+
+<p>例如scp /var/www/test.php  root@192.168.0.101:/var/www/  把本机/var/www/目录下的test.php文件上传到192.168.0.101这台服务器上的/var/www/目录中</p>
+
+<ul>
+<li>从服务器下载整个目录
+<code>scp -r username@servername:/var/www/remote_dir/（远程目录） /var/www/local_dir（本地目录）</code></li>
+</ul>
+
+<p>例如:scp -r root@192.168.0.101:/var/www/test  /var/www/</p>
+
+<ul>
+<li>上传目录到服务器
+<code>scp  -r local_dir username@servername:remote_dir</code>
+例如：scp -r test  root@192.168.0.101:/var/www/   把当前目录下的test目录上传到服务器的/var/www/ 目录</li>
+</ul>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<hr>
+		</div>
+	</div>
+</div>
+
+    <div class="container">
+        <div class="row col-md-12">
+            <footer>
+                <div class="pull-left">
+                    <p>
+                        &copy; 2015 ~ erickdotphp ~ Powered By <a href="http://hugo.spf13.com">Hugo</a> - version: 0.15 ~ <a href="http://erickdotphp.github.io/license">License</a>
+                    </p>
+                </div>
+
+                
+                <div class="pull-right">
+                    
+                        <a href="https://www.linkedin.com/in/erickdotphp" target="_blank">
+                        <i class="fa fa-linkedin fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.facebook.com/erickdotphp" target="_blank">
+                        <i class="fa fa-facebook-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://twitter.com/erickdotphp" target="_blank">
+                        <i class="fa fa-twitter-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://github.com/erickdotphp" target="_blank">
+                        <i class="fa fa-github-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://delicious.com/erickdotphp" target="_blank">
+                        <i class="fa fa-delicious fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.flickr.com/photos/erickdotphp" target="_blank">
+                        <i class="fa fa-flickr fa-2x"></i></a>
+                    
+                    
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    
+    </body>
+</html>
+

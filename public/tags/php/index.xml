@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Php on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/php/</link>
+    <description>Recent content in Php on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Wed, 16 Mar 2016 22:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>PHP SSH2 扩展</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</link>
+            <pubDate>Wed, 16 Mar 2016 22:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/php-ssh2-%E6%89%A9%E5%B1%95/</guid>
+            <description>
+
+&lt;h3 id=&#34;安装:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装&lt;/h3&gt;
+
+&lt;h4 id=&#34;下载包:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;下载包&lt;/h4&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&#34;&gt;http://www.libssh2.org/download/libssh2-1.4.2.tar.gz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;wget &lt;a href=&#34;http://pecl.php.net/get/ssh2-0.12.tgz&#34;&gt;http://pecl.php.net/get/ssh2-0.12.tgz&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;先安装-libssh2-再安装-ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;先安装 libssh2 再安装 SSH2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf libssh2-1.4.2.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd libssh2-1.4.2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/libssh2&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;安装ssh2:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;安装ssh2&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar -zxvf ssh2-0.12.tgz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd ssh2-0.12&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ /usr/local/zend/bin/phpize&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ./configure --prefix=/usr/local/ssh2 --with-ssh2=/usr/local/libssh2 --with-php-config=/usr/local/zend/bin/php-config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ make &amp;amp;&amp;amp; make install&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;修改php.ini 加入&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;extension=ssh2.so&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;重启Zend Server&lt;/p&gt;
+
+&lt;h3 id=&#34;调试:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;调试&lt;/h3&gt;
+
+&lt;h5 id=&#34;用户名密码方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用户名密码方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$user=&amp;quot;root&amp;quot;;//远程用户名
+$pass=&amp;quot;123456&amp;quot;;//远程密码
+$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+ssh2_auth_password($connection,$user,$pass);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;用sshkey方式登录:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;用sshkey方式登录&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$connection=ssh2_connect(&#39;192.168.1.46&#39;,22);
+if(ssh2_auth_pubkey_file($connection, &#39;root&#39;, &#39;/home/id_rsa.pub&#39;, &#39;/home/id_rsa&#39;, &#39;secret&#39;))
+{
+    echo &amp;quot;Public Key Authentication Successful\n&amp;quot;;
+} else {    
+    die(&#39;Public Key Authentication Failed&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&#34;执行命令获取返回值:ad2d16bc04b9308ca0888a494676fdc8&#34;&gt;执行命令获取返回值&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code&gt;$cmd=&amp;quot;ps aux&amp;quot;;//命令
+$ret=ssh2_exec($connection,$cmd);
+stream_set_blocking($ret, true);
+echo (stream_get_contents($ret));
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 ZendServer</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</link>
+            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</guid>
+            <description>
+
+&lt;h3 id=&#34;获取官方包:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;获取官方包&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ wget http://downloads.zend.com/zendserver/8.5.1/ZendServer-8.5.1-RepositoryInstaller-linux.tar.gz&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;关闭防火墙:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;关闭防火墙&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ vim /etc/selinux/config&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;SELINUX=disabled&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ setenforce 0&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装zendserver:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;安装ZendServer&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;./install_zs.sh 5.6 nginx&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;远程访问不到zend-server-需要关闭iptable:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;远程访问不到zend server 需要关闭iptable&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ service iptables status&lt;/code&gt;
+&lt;code&gt;$ service iptables stop&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置文件的路径如下:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;配置文件的路径如下&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;nginx  vim /etc/nginx/nginx.conf&lt;/li&gt;
+&lt;li&gt;php /usr/local/zend/etc/php.ini&lt;/li&gt;
+&lt;li&gt;fpm /usr/local/zend/etc/php-fpm.conf&lt;/li&gt;
+&lt;li&gt;虚拟机 /usr/local/zend/etc/sites.d&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;都配置好以后可以访问主机地址了:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;都配置好以后可以访问主机地址了&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://localhost:10081/ZendServer/&#34;&gt;http://localhost:10081/ZendServer/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;另外破解方法:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;另外破解方法&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;vim /usr/local/zend/gui/module/Configuration/src/Configuration/License/License.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;所有判断改成return true;&lt;/p&gt;
+
+&lt;h3 id=&#34;faq:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;FAQ&lt;/h3&gt;
+
+&lt;p&gt;Nginx 报错 no port in upstream &amp;ldquo;fastcgi_backend&amp;rdquo;,因为没有配置fastcgi
+在/etc/nginx/nginx.conf在&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;access_log  /var/log/nginx/access.log  main;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;后面加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    fastcgi_read_timeout 300;
+    upstream fastcgi_backend {
+       server   unix:/usr/local/zend/tmp/php-fpm.sock;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中fastcgi_read_timeout 300;是为了防止ngxin 504超时错误&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

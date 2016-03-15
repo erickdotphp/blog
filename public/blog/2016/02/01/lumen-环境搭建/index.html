@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Lumen 环境搭建">
+    <meta name="author" content="erickdotphp">
+
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Lumen 环境搭建 &middot; Erick BLog</title>
+
+   	
+    
+        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/journal.css">
+    
+
+    <link rel="stylesheet" href="http://erickdotphp.github.io/css/font-awesome.min.css">
+
+   	
+   	<link rel="stylesheet" href="http://erickdotphp.github.io/css/style.css">
+
+
+    
+    <script src="http://erickdotphp.github.io/js/jquery.min-2.1.4.js"></script>
+    <script src="http://erickdotphp.github.io/js/bootstrap.min-3.3.5.js"></script>
+
+    
+    <link href="" rel="alternate" type="application/rss+xml" title="Erick BLog" />
+</head>
+<body lang="en">
+    
+    <div class="container">
+    <div class="row">
+        <div class="navbar navbar-default " role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://erickdotphp.github.io">Erick BLog</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://erickdotphp.github.io">Home</a></li>
+                    <li><a href="http://erickdotphp.github.io/post/">Blog</a></li>
+                    
+                    <li><a href="https://github.com/erickdotphp" target="_blank"><img width="16px"  src="/img/git.ico"/></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<h3>Lumen 环境搭建</h3>
+				<span class="label label-primary">2016年02月01日</span> in 
+				
+					
+					<a href="/categories/env">env</a>
+				 using tags
+				
+					
+					<a href="/tags/lumen">Lumen</a>
+				
+			</small>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<br>
+			
+
+<h3 id="安装composer:8b0d77d2d0ed0248257bdb90ac2bef73">安装composer</h3>
+
+<p><code>$ curl -sS https://getcomposer.org/installer | php -- --install-dir=lumen</code></p>
+
+<h4 id="全局使用:8b0d77d2d0ed0248257bdb90ac2bef73">全局使用</h4>
+
+<p><code>$ mv composer.phar /usr/local/bin/composer</code></p>
+
+<h4 id="配置path:8b0d77d2d0ed0248257bdb90ac2bef73">配置PATH</h4>
+
+<p><code>$ export PATH=~/.composer/vendor/bin:$PATH</code></p>
+
+<h3 id="安装lumen:8b0d77d2d0ed0248257bdb90ac2bef73">安装lumen</h3>
+
+<p><code>$ composer global require &quot;laravel/lumen-installer&quot;</code></p>
+
+<h3 id="设置nginx:8b0d77d2d0ed0248257bdb90ac2bef73">设置nginx</h3>
+
+<pre><code>server {
+listen  80;
+server_name www.lumen.loc;
+set $root_path '/home/wwwroot/lumen/public';  
+root $root_path;
+index index.php index.html index.htm;  
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+location ~ (index|get|static|report|404|503)\.php$ {
+    try_files $uri =404;
+    fastcgi_pass   fastcgi_backend;
+
+    fastcgi_param  PHP_FLAG  &quot;session.auto_start=off \n suhosin.session.cryptua=off&quot;;
+    fastcgi_param  PHP_VALUE &quot;memory_limit=256M \n max_execution_time=600&quot;;
+    fastcgi_read_timeout 600s;
+    fastcgi_connect_timeout 600s;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    include        fastcgi_params;
+}
+    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+        root $root_path;  
+    }
+    location ~ /\.ht {
+        deny all;
+    }
+}
+</code></pre>
+
+<h3 id="修改hosts:8b0d77d2d0ed0248257bdb90ac2bef73">修改hosts</h3>
+
+<p>/etc/hosts</p>
+
+<h3 id="composer-重新加载类库:8b0d77d2d0ed0248257bdb90ac2bef73">composer 重新加载类库</h3>
+
+<p>php composer.phar dump-autoload</p>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<hr>
+		</div>
+	</div>
+</div>
+
+    <div class="container">
+        <div class="row col-md-12">
+            <footer>
+                <div class="pull-left">
+                    <p>
+                        &copy; 2015 ~ erickdotphp ~ Powered By <a href="http://hugo.spf13.com">Hugo</a> - version: 0.15 ~ <a href="http://erickdotphp.github.io/license">License</a>
+                    </p>
+                </div>
+
+                
+                <div class="pull-right">
+                    
+                        <a href="https://www.linkedin.com/in/erickdotphp" target="_blank">
+                        <i class="fa fa-linkedin fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.facebook.com/erickdotphp" target="_blank">
+                        <i class="fa fa-facebook-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://twitter.com/erickdotphp" target="_blank">
+                        <i class="fa fa-twitter-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://github.com/erickdotphp" target="_blank">
+                        <i class="fa fa-github-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://delicious.com/erickdotphp" target="_blank">
+                        <i class="fa fa-delicious fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.flickr.com/photos/erickdotphp" target="_blank">
+                        <i class="fa fa-flickr fa-2x"></i></a>
+                    
+                    
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    
+    </body>
+</html>
+

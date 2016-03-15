@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="PHP SSH2 扩展">
+    <meta name="author" content="erickdotphp">
+
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP SSH2 扩展 &middot; Erick BLog</title>
+
+   	
+    
+        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/journal.css">
+    
+
+    <link rel="stylesheet" href="http://erickdotphp.github.io/css/font-awesome.min.css">
+
+   	
+   	<link rel="stylesheet" href="http://erickdotphp.github.io/css/style.css">
+
+
+    
+    <script src="http://erickdotphp.github.io/js/jquery.min-2.1.4.js"></script>
+    <script src="http://erickdotphp.github.io/js/bootstrap.min-3.3.5.js"></script>
+
+    
+    <link href="" rel="alternate" type="application/rss+xml" title="Erick BLog" />
+</head>
+<body lang="en">
+    
+    <div class="container">
+    <div class="row">
+        <div class="navbar navbar-default " role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://erickdotphp.github.io">Erick BLog</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://erickdotphp.github.io">Home</a></li>
+                    <li><a href="http://erickdotphp.github.io/post/">Blog</a></li>
+                    
+                    <li><a href="https://github.com/erickdotphp" target="_blank"><img width="16px"  src="/img/git.ico"/></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<h3>PHP SSH2 扩展</h3>
+				<span class="label label-primary">2016年03月16日</span> in 
+				
+					
+					<a href="/categories/env">env</a>
+				 using tags
+				
+					
+					<a href="/tags/php">PHP</a>
+				
+					 , 
+					<a href="/tags/ssh2">SSH2</a>
+				
+			</small>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<br>
+			
+
+<h3 id="安装:ad2d16bc04b9308ca0888a494676fdc8">安装</h3>
+
+<h4 id="下载包:ad2d16bc04b9308ca0888a494676fdc8">下载包</h4>
+
+<p>wget <a href="http://www.libssh2.org/download/libssh2-1.4.2.tar.gz">http://www.libssh2.org/download/libssh2-1.4.2.tar.gz</a></p>
+
+<p>wget <a href="http://pecl.php.net/get/ssh2-0.12.tgz">http://pecl.php.net/get/ssh2-0.12.tgz</a></p>
+
+<h4 id="先安装-libssh2-再安装-ssh2:ad2d16bc04b9308ca0888a494676fdc8">先安装 libssh2 再安装 SSH2</h4>
+
+<p><code>$ tar -zxvf libssh2-1.4.2.tar.gz</code></p>
+
+<p><code>$ cd libssh2-1.4.2</code></p>
+
+<p><code>$ ./configure --prefix=/usr/local/libssh2</code></p>
+
+<p><code>$ make &amp;&amp; make install</code></p>
+
+<h4 id="安装ssh2:ad2d16bc04b9308ca0888a494676fdc8">安装ssh2</h4>
+
+<p><code>$ tar -zxvf ssh2-0.12.tgz</code></p>
+
+<p><code>$ cd ssh2-0.12</code></p>
+
+<p><code>$ /usr/local/zend/bin/phpize</code></p>
+
+<p><code>$ ./configure --prefix=/usr/local/ssh2 --with-ssh2=/usr/local/libssh2 --with-php-config=/usr/local/zend/bin/php-config</code></p>
+
+<p><code>$ make &amp;&amp; make install</code></p>
+
+<p>修改php.ini 加入</p>
+
+<p><code>extension=ssh2.so</code></p>
+
+<p>重启Zend Server</p>
+
+<h3 id="调试:ad2d16bc04b9308ca0888a494676fdc8">调试</h3>
+
+<h5 id="用户名密码方式登录:ad2d16bc04b9308ca0888a494676fdc8">用户名密码方式登录</h5>
+
+<pre><code>$user=&quot;root&quot;;//远程用户名
+$pass=&quot;123456&quot;;//远程密码
+$connection=ssh2_connect('192.168.1.46',22);
+ssh2_auth_password($connection,$user,$pass);
+</code></pre>
+
+<h5 id="用sshkey方式登录:ad2d16bc04b9308ca0888a494676fdc8">用sshkey方式登录</h5>
+
+<pre><code>$connection=ssh2_connect('192.168.1.46',22);
+if(ssh2_auth_pubkey_file($connection, 'root', '/home/id_rsa.pub', '/home/id_rsa', 'secret'))
+{
+    echo &quot;Public Key Authentication Successful\n&quot;;
+} else {    
+    die('Public Key Authentication Failed');
+}
+</code></pre>
+
+<h5 id="执行命令获取返回值:ad2d16bc04b9308ca0888a494676fdc8">执行命令获取返回值</h5>
+
+<pre><code>$cmd=&quot;ps aux&quot;;//命令
+$ret=ssh2_exec($connection,$cmd);
+stream_set_blocking($ret, true);
+echo (stream_get_contents($ret));
+</code></pre>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<hr>
+		</div>
+	</div>
+</div>
+
+    <div class="container">
+        <div class="row col-md-12">
+            <footer>
+                <div class="pull-left">
+                    <p>
+                        &copy; 2015 ~ erickdotphp ~ Powered By <a href="http://hugo.spf13.com">Hugo</a> - version: 0.15 ~ <a href="http://erickdotphp.github.io/license">License</a>
+                    </p>
+                </div>
+
+                
+                <div class="pull-right">
+                    
+                        <a href="https://www.linkedin.com/in/erickdotphp" target="_blank">
+                        <i class="fa fa-linkedin fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.facebook.com/erickdotphp" target="_blank">
+                        <i class="fa fa-facebook-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://twitter.com/erickdotphp" target="_blank">
+                        <i class="fa fa-twitter-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://github.com/erickdotphp" target="_blank">
+                        <i class="fa fa-github-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://delicious.com/erickdotphp" target="_blank">
+                        <i class="fa fa-delicious fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.flickr.com/photos/erickdotphp" target="_blank">
+                        <i class="fa fa-flickr fa-2x"></i></a>
+                    
+                    
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    
+    </body>
+</html>
+

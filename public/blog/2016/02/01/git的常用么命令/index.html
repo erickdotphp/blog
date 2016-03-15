@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Git的常用么命令">
+    <meta name="author" content="erickdotphp">
+
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git的常用么命令 &middot; Erick BLog</title>
+
+   	
+    
+        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/journal.css">
+    
+
+    <link rel="stylesheet" href="http://erickdotphp.github.io/css/font-awesome.min.css">
+
+   	
+   	<link rel="stylesheet" href="http://erickdotphp.github.io/css/style.css">
+
+
+    
+    <script src="http://erickdotphp.github.io/js/jquery.min-2.1.4.js"></script>
+    <script src="http://erickdotphp.github.io/js/bootstrap.min-3.3.5.js"></script>
+
+    
+    <link href="" rel="alternate" type="application/rss+xml" title="Erick BLog" />
+</head>
+<body lang="en">
+    
+    <div class="container">
+    <div class="row">
+        <div class="navbar navbar-default " role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://erickdotphp.github.io">Erick BLog</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://erickdotphp.github.io">Home</a></li>
+                    <li><a href="http://erickdotphp.github.io/post/">Blog</a></li>
+                    
+                    <li><a href="https://github.com/erickdotphp" target="_blank"><img width="16px"  src="/img/git.ico"/></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<h3>Git的常用么命令</h3>
+				<span class="label label-primary">2016年02月01日</span> in 
+				
+					
+					<a href="/categories/tool">tool</a>
+				 using tags
+				
+					
+					<a href="/tags/git">git</a>
+				
+			</small>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<br>
+			
+
+<h4 id="生成密钥:1c1ef82aae62aeea8eedcb5f455b129b">生成密钥</h4>
+
+<p><code>ssh-keygen</code></p>
+
+<h4 id="添加公钥到git账户:1c1ef82aae62aeea8eedcb5f455b129b">添加公钥到git账户</h4>
+
+<h4 id="检测是否成功:1c1ef82aae62aeea8eedcb5f455b129b">检测是否成功</h4>
+
+<p><code>ssh -T git@github.com</code></p>
+
+<h4 id="获取代码:1c1ef82aae62aeea8eedcb5f455b129b">获取代码</h4>
+
+<p>git clone git://github.com:xxxx/test.git 以gitreadonly方式克隆到本地，只可以读</p>
+
+<p>git clone git@github.com:xxx/test.git  ##以SSH方式克隆到本地，可以读写</p>
+
+<p>git clone <a href="https://github.com/xxx/test.git">https://github.com/xxx/test.git</a> ##以https方式克隆到本地，可以读写</p>
+
+<p>git fetch git@github.com:xxx/xxx.git  ##获取到本地但不合并</p>
+
+<p>git pull git@github.com:xxx/xxx.git ##获取并合并内容到本地</p>
+
+<h4 id="本地配置:1c1ef82aae62aeea8eedcb5f455b129b">本地配置</h4>
+
+<p>git config &ndash;global user.name &lsquo;ed&rsquo;<br />
+git config &ndash;global user.email &lsquo;erickdotphp@gmail.com&rsquo; #全局联系方式，可选</p>
+
+<h4 id="新建git项目并提交到github:1c1ef82aae62aeea8eedcb5f455b129b">新建Git项目并提交到Github</h4>
+
+<p><code>mkdir testdir &amp; cd testdir</code>
+<code>touch README.md</code>
+* git init #初始化一个本地库<br />
+* git add README.md #添加文件到本地仓库<br />
+* git rm README.md #本地倒库内删除<br />
+* git commit -m &ldquo;first commit&rdquo; #提交到本地库并备注，此时变更仍在本地。<br />
+* git commit -a  ##自动更新变化的文件，a可以理解为auto<br />
+* git remote add xxx git@github.com:xxx/xxx.git  #增加一个远程服务器的别名。<br />
+* git remote rm xxx   ##删除远程版本库的别名<br />
+* git push -u remotename master</p>
+
+<p>将本地文件提交到Github的remoname版本库中。此时才更新了本地变更到github服务上。</p>
+
+<h4 id="创建和合并分支:1c1ef82aae62aeea8eedcb5f455b129b">创建和合并分支</h4>
+
+<ul>
+<li>git branch #显示当前分支是master<br /></li>
+<li>git branch new-feature  #创建分支<br /></li>
+<li>git checkout new-feature  #切换到新分支<br /></li>
+<li>vi page_cache.inc.php<br /></li>
+<li>git add page_cache.inc.php<br /></li>
+<li>git commit -a -m &ldquo;added initial version of page cache&rdquo;<br /></li>
+<li>git push origin new-feature  ##把分支提交到远程服务器，只是把分支结构和内容提交到远程，并没有发生和主干的合并行为。<br /></li>
+</ul>
+
+<h4 id="如果new-feature分支成熟了-觉得有必要合并进master:1c1ef82aae62aeea8eedcb5f455b129b">如果new-feature分支成熟了，觉得有必要合并进master</h4>
+
+<ul>
+<li>git checkout master  #切换到新主干<br /></li>
+<li>git merge new-feature  ##把分支合并到主干<br /></li>
+<li>git branch #显示当前分支是master<br /></li>
+<li>git push  #此时主干中也合并了new-feature的代码<br /></li>
+</ul>
+
+<h4 id="忽略某个文件更新的命令:1c1ef82aae62aeea8eedcb5f455b129b">忽略某个文件更新的命令</h4>
+
+<p><code>git update-index --assume-unchanged</code></p>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<hr>
+		</div>
+	</div>
+</div>
+
+    <div class="container">
+        <div class="row col-md-12">
+            <footer>
+                <div class="pull-left">
+                    <p>
+                        &copy; 2015 ~ erickdotphp ~ Powered By <a href="http://hugo.spf13.com">Hugo</a> - version: 0.15 ~ <a href="http://erickdotphp.github.io/license">License</a>
+                    </p>
+                </div>
+
+                
+                <div class="pull-right">
+                    
+                        <a href="https://www.linkedin.com/in/erickdotphp" target="_blank">
+                        <i class="fa fa-linkedin fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.facebook.com/erickdotphp" target="_blank">
+                        <i class="fa fa-facebook-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://twitter.com/erickdotphp" target="_blank">
+                        <i class="fa fa-twitter-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://github.com/erickdotphp" target="_blank">
+                        <i class="fa fa-github-square fa-2x"></i></a>
+                    
+                    
+                        <a href="https://delicious.com/erickdotphp" target="_blank">
+                        <i class="fa fa-delicious fa-2x"></i></a>
+                    
+                    
+                        <a href="https://www.flickr.com/photos/erickdotphp" target="_blank">
+                        <i class="fa fa-flickr fa-2x"></i></a>
+                    
+                    
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    
+    </body>
+</html>
+

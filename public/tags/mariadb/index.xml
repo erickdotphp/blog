@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mariadb on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/mariadb/</link>
+    <description>Recent content in Mariadb on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Mon, 01 Feb 2016 11:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/mariadb/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 mariadb</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/</link>
+            <pubDate>Mon, 01 Feb 2016 11:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/</guid>
+            <description>
+
+&lt;h3 id=&#34;全部删除mysql-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;全部删除MySQL/MariaDB&lt;/h3&gt;
+
+&lt;p&gt;MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;
+* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用rpm -e &amp;ndash;nodeps mariadb-*全部删除：
+* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；&lt;/p&gt;
+
+&lt;h3 id=&#34;添加mariadb的yum源:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;添加MariaDB的yum源&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建 /etc/yum.repos.d/MariaDB.repo：&lt;/li&gt;
+&lt;li&gt;添加yum源,该文件中添加如图所示内容：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;# MariaDB 10.1 CentOS repository list - created 2015-11-19 02:26 UTC
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.0/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;安装-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;安装 MariaDB&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ yum install MariaDB-server MariaDB-client&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;启动-配置mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;启动、配置MariaDB&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ service mysql start&lt;/code&gt;
+&lt;code&gt;$ mysql_secure_installation&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

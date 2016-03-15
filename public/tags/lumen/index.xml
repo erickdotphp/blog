@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lumen on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/lumen/</link>
+    <description>Recent content in Lumen on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Mon, 01 Feb 2016 11:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/lumen/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Lumen 环境搭建</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+            <pubDate>Mon, 01 Feb 2016 11:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+            <description>
+
+&lt;h3 id=&#34;安装composer:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;安装composer&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ curl -sS https://getcomposer.org/installer | php -- --install-dir=lumen&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;全局使用:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;全局使用&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv composer.phar /usr/local/bin/composer&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;配置path:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;配置PATH&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ export PATH=~/.composer/vendor/bin:$PATH&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装lumen:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;安装lumen&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ composer global require &amp;quot;laravel/lumen-installer&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;设置nginx:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;设置nginx&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+listen  80;
+server_name www.lumen.loc;
+set $root_path &#39;/home/wwwroot/lumen/public&#39;;  
+root $root_path;
+index index.php index.html index.htm;  
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+location ~ (index|get|static|report|404|503)\.php$ {
+    try_files $uri =404;
+    fastcgi_pass   fastcgi_backend;
+
+    fastcgi_param  PHP_FLAG  &amp;quot;session.auto_start=off \n suhosin.session.cryptua=off&amp;quot;;
+    fastcgi_param  PHP_VALUE &amp;quot;memory_limit=256M \n max_execution_time=600&amp;quot;;
+    fastcgi_read_timeout 600s;
+    fastcgi_connect_timeout 600s;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    include        fastcgi_params;
+}
+    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+        root $root_path;  
+    }
+    location ~ /\.ht {
+        deny all;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;修改hosts:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;修改hosts&lt;/h3&gt;
+
+&lt;p&gt;/etc/hosts&lt;/p&gt;
+
+&lt;h3 id=&#34;composer-重新加载类库:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;composer 重新加载类库&lt;/h3&gt;
+
+&lt;p&gt;php composer.phar dump-autoload&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

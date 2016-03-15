@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sublime on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/sublime/</link>
+    <description>Recent content in Sublime on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Mon, 01 Feb 2016 12:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/sublime/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装和配置 Sublime Text3</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-sublime-text3/</link>
+            <pubDate>Mon, 01 Feb 2016 12:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-sublime-text3/</guid>
+            <description>
+
+&lt;h3 id=&#34;下载最新的包:156810766b2e870ff15329801f943416&#34;&gt;下载最新的包&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.sublimetext.com/3&#34;&gt;http://www.sublimetext.com/3&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下载tarball&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ tar jxvf sublime_text_3_build_3083_x64.tar.bz2  -C /opt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;移动到系统目录:156810766b2e870ff15329801f943416&#34;&gt;移动到系统目录&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv sublime_text_3 /opt/&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;创建连接:156810766b2e870ff15329801f943416&#34;&gt;创建连接&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ ln -s /opt/sublime_text_3/sublime_text /usr/bin/sublime&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;移动到系统目录下:156810766b2e870ff15329801f943416&#34;&gt;移动到系统目录下&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ cp /opt/sublime_text_3/sublime_text.desktop /usr/share/applications&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;修改配置文件:156810766b2e870ff15329801f943416&#34;&gt;修改配置文件&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ cd /usr/share/applications&lt;/code&gt;
+&lt;code&gt;$ vim sublime_text.desktop&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Sublime Text
+GenericName=Text Editor
+Comment=Sophisticated text editor for code, markup and prose
+Exec=/opt/sublime_text_3/sublime_text %F
+Terminal=false
+MimeType=text/plain;
+Icon=/opt/sublime_text_3/Icon/48x48/sublime-text.png
+Categories=TextEditor;Development;
+StartupNotify=true
+Actions=Window;Document;
+
+[Desktop Action Window]
+Name=New Window
+Exec=/opt/sublime_text_3/sublime_text -n
+OnlyShowIn=Unity;
+
+[Desktop Action Document]
+Name=New File
+Exec=/opt/sublime_text_3/sublime_text --command new_file
+OnlyShowIn=Unity;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这些都做完以后 sublime的快捷方式会出现在   应用程序=&amp;gt;编程 里面&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

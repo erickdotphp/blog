@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Composer on Erick BLog</title>
+    <link>http://erickdotphp.github.io/tags/composer/</link>
+    <description>Recent content in Composer on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Mon, 01 Feb 2016 12:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/tags/composer/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Centos7 上 安装 Composer</title>
+            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/</link>
+            <pubDate>Mon, 01 Feb 2016 12:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/</guid>
+            <description>
+
+&lt;p&gt;安装前请确保 环境中有PHP
+可以用&lt;code&gt;php -v&lt;/code&gt;查看&lt;/p&gt;
+
+&lt;h4 id=&#34;下载:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;下载&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ curl -sS https://getcomposer.org/installer| php -- --install-dir=/home&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;移动到可执行目录:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;移动到可执行目录&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ mv composer.phar /usr/local/bin/composer&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;配置环境变量:1d289a0d6ce78f28ee09576170bf8ad5&#34;&gt;配置环境变量&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ export PATH=$PATH:/usr/local/bin&lt;/code&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>

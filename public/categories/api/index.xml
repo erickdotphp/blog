@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Api on Erick BLog</title>
+    <link>http://erickdotphp.github.io/categories/api/</link>
+    <description>Recent content in Api on Erick BLog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
+    <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
+    <lastBuildDate>Tue, 15 Mar 2016 10:30:55 +0800</lastBuildDate>
+    <atom:link href="http://erickdotphp.github.io/categories/api/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Digital Ocean API整理</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/15/digital-ocean-api%E6%95%B4%E7%90%86/</link>
+            <pubDate>Tue, 15 Mar 2016 10:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/15/digital-ocean-api%E6%95%B4%E7%90%86/</guid>
+            <description>
+
+&lt;h3 id=&#34;请求类型:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;请求类型&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;GET&lt;/strong&gt; 只读请求，不需要验证，不会影响查询对象&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;DELETE&lt;/strong&gt; 删除操作&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;PUT&lt;/strong&gt; 更新操作&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;POST&lt;/strong&gt; 新增操作&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;HEAD&lt;/strong&gt; 只返回GET查询的head部分用于查询metadata&lt;/p&gt;
+
+&lt;h3 id=&#34;需要理解的几个词:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;需要理解的几个词&lt;/h3&gt;
+
+&lt;h4 id=&#34;account:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Account&lt;/h4&gt;
+
+&lt;p&gt;账户，包括基本信息，状态，水滴上限等等&lt;/p&gt;
+
+&lt;h4 id=&#34;droplet:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Droplet&lt;/h4&gt;
+
+&lt;p&gt;水滴（暂时这么翻译吧），可以理解为容器，Ocean的基本单位&lt;/p&gt;
+
+&lt;h4 id=&#34;image:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Image&lt;/h4&gt;
+
+&lt;p&gt;镜像，给Droplet使用的，可以作为备份，快照，或者是基础镜像&lt;/p&gt;
+
+&lt;h4 id=&#34;actions:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Actions&lt;/h4&gt;
+
+&lt;p&gt;类似于日志的东西&lt;/p&gt;
+
+&lt;h4 id=&#34;regions:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Regions&lt;/h4&gt;
+
+&lt;p&gt;区域，Digital Ocean 数据中心所在地，镜像可以在不同的区域之间切换&lt;/p&gt;
+
+&lt;h4 id=&#34;slug:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Slug&lt;/h4&gt;
+
+&lt;p&gt;区域的唯一标示，human-readable&lt;/p&gt;
+
+&lt;h4 id=&#34;size:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Size&lt;/h4&gt;
+
+&lt;p&gt;硬件配置信息，一组配置信息包括内存，磁盘，区域CPU数量等信息。&lt;/p&gt;
+
+&lt;h4 id=&#34;floating-ip:408d90965407ccd8c9d1d1bcc218cd96&#34;&gt;Floating IP&lt;/h4&gt;
+
+&lt;p&gt;公网可访问的静态IP，跟容器绑定&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+  </channel>
+</rss>
