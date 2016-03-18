@@ -49,8 +49,8 @@ theme       = "hugo-multi-bootswatch"
     date_format = '2006年01月02日'
 
 [params.theme]
-    inverse = false     # indicating if the theme should use inversed colors
-    name = "journal"   # name of the theme to use
+    inverse = true     # indicating if the theme should use inversed colors
+    name = "cerulean"   # name of the theme to use
 
     # list of possible theme names that can be used
     # name = "cerulean"

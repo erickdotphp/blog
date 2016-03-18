@@ -35,7 +35,7 @@ def deploy(args):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
     public_dir = os.path.join(current_dir, 'public')
-    commit_msg = ''
+    commit_msg = 'update blog'
 
     with ChDir(current_dir):
         # step1 clean

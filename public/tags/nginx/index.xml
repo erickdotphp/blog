@@ -7,8 +7,57 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
     <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
-    <lastBuildDate>Mon, 01 Feb 2016 10:30:55 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 16 Mar 2016 17:32:55 +0800</lastBuildDate>
     <atom:link href="http://erickdotphp.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Nginx 配置 HTTPS</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/nginx-%E9%85%8D%E7%BD%AE-https/</link>
+            <pubDate>Wed, 16 Mar 2016 17:32:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/nginx-%E9%85%8D%E7%BD%AE-https/</guid>
+            <description>
+
+&lt;p&gt;生成证书需要openssl
+没有的话先安装&lt;/p&gt;
+
+&lt;h3 id=&#34;创建服务器私钥:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;创建服务器私钥&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl genrsa -des3 -out server.key 1024&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;创建签名请求的证书-csr:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;创建签名请求的证书（CSR）&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl req -new -key server.key -out server.csr&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;会要求填写一些信息&lt;/p&gt;
+
+&lt;h3 id=&#34;重新生成没有密码的key:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;重新生成没有密码的key&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ cp server.key server.key.org&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl rsa -in server.key.org -out server.key&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;产生私钥:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;产生私钥&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置nginx:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;配置Nginx&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    server_name YOUR_DOMAINNAME_HERE;
+    listen 443;
+    ssl on;
+    ssl_certificate /usr/local/nginx/conf/server.crt;
+    ssl_certificate_key /usr/local/nginx/conf/server.key;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
     
       
         

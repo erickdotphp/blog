@@ -14,7 +14,7 @@
 
    	
     
-        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/journal.css">
+        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/cerulean.css">
     
 
     <link rel="stylesheet" href="http://erickdotphp.github.io/css/font-awesome.min.css">
@@ -34,7 +34,7 @@
     
     <div class="container">
     <div class="row">
-        <div class="navbar navbar-default " role="navigation">
+        <div class="navbar navbar-default navbar-inverse" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand" href="http://erickdotphp.github.io">Erick BLog</a>
             </div>
@@ -78,11 +78,15 @@
 
 <h3 id="全部删除mysql-mariadb:b67bc1b681b2f1df56e313dd51c88107">全部删除MySQL/MariaDB</h3>
 
-<p>MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;
-* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
-如果存在，使用rpm -e &ndash;nodeps mariadb-*全部删除：
-* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
-如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；</p>
+<p>MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;</p>
+
+<ul>
+<li><p>使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用rpm -e &ndash;nodeps mariadb-*全部删除：</p></li>
+
+<li><p>使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；</p></li>
+</ul>
 
 <h3 id="添加mariadb的yum源:b67bc1b681b2f1df56e313dd51c88107">添加MariaDB的yum源</h3>
 
@@ -106,8 +110,9 @@ gpgcheck=1
 
 <h3 id="启动-配置mariadb:b67bc1b681b2f1df56e313dd51c88107">启动、配置MariaDB</h3>
 
-<p><code>$ service mysql start</code>
-<code>$ mysql_secure_installation</code></p>
+<p><code>$ service mysql start</code></p>
+
+<p><code>$ mysql_secure_installation</code></p>
 
 		</div>
 	</div>

@@ -7,8 +7,35 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
     <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
-    <lastBuildDate>Tue, 15 Mar 2016 10:30:55 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 16 Mar 2016 09:56:00 +0800</lastBuildDate>
     <atom:link href="http://erickdotphp.github.io/tags/digital-ocean/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>使用Digital Ocean快速生成一个Word Press</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/%E4%BD%BF%E7%94%A8digital-ocean%E5%BF%AB%E9%80%9F%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AAword-press/</link>
+            <pubDate>Wed, 16 Mar 2016 09:56:00 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/%E4%BD%BF%E7%94%A8digital-ocean%E5%BF%AB%E9%80%9F%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AAword-press/</guid>
+            <description>
+
+&lt;h4 id=&#34;第一步-创建droplet:5bfba050f84083c3854094a5899dcb4e&#34;&gt;第一步 创建Droplet&lt;/h4&gt;
+
+&lt;p&gt;选择 &lt;em&gt;One Click Apps&lt;/em&gt; 标签
+选择 &lt;em&gt;Word Press&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;完成之后的配置&lt;/p&gt;
+
+&lt;h4 id=&#34;第二步-通过ssh配置word-press:5bfba050f84083c3854094a5899dcb4e&#34;&gt;第二步 通过SSH配置Word Press&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ ssh root@droplet.ip.address&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;参考&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/one-click-install-wordpress-on-ubuntu-14-04-with-digitalocean&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;
+</description>
+          </item>
+        
+      
     
       
         

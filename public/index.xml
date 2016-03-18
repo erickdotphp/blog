@@ -7,8 +7,191 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
     <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
-    <lastBuildDate>Wed, 16 Mar 2016 22:30:55 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 18 Mar 2016 13:30:55 +0800</lastBuildDate>
     <atom:link href="http://erickdotphp.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Lumen和Laravel用法上的区别整理（一）</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%B8%80/</link>
+            <pubDate>Fri, 18 Mar 2016 13:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%B8%80/</guid>
+            <description>
+
+&lt;p&gt;在把Lumen代码迁移到Laravel框架的时候，遇到了一些问题，虽然Lumen是基于Laravel的，但是也有一些不兼容的地方需要注意。在这里整理了一些Lumen和Laravel框架用法上的区别.&lt;/p&gt;
+
+&lt;p&gt;PS:这次迁移是从Lumen5.1迁移到Laravel5.2版本&lt;/p&gt;
+
+&lt;h2 id=&#34;路由:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;路由&lt;/h2&gt;
+
+&lt;h3 id=&#34;一般的路由:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;一般的路由&lt;/h3&gt;
+
+&lt;p&gt;Lumen是这样写的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;get(&#39;/&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;IndexController@getIndex&#39;
+]);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;而Laravel是这样的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Route::get(&#39;/&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;IndexController@getIndex&#39;
+]);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;有参数并且需要正则的路由:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;有参数并且需要正则的路由&lt;/h3&gt;
+
+&lt;p&gt;Lumen:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;get(&#39;/docs/{id:[0-9]+}&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;SupportController@getQuestionDetail&#39;, &#39;as&#39; =&amp;gt; &#39;question_detail&#39;
+]);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Laravel:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Route::get(&#39;/docs/{id}&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;SupportController@getQuestionDetail&#39;, &#39;as&#39; =&amp;gt; &#39;question_detail&#39;
+])-&amp;gt;where(&#39;id&#39;, &#39;[0-9]+&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者可以直接在RouteServiceProvider里面定义全局正则&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    public function boot(Router $router)
+    {
+        //
+        $router-&amp;gt;pattern(&#39;id&#39;, &#39;[0-9]+&#39;);
+
+        parent::boot($router);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;namespace:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;Namespace&lt;/h3&gt;
+
+&lt;p&gt;路由组里面的Namespace&lt;/p&gt;
+
+&lt;p&gt;Lumen:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;group([&#39;namespace&#39; =&amp;gt; &#39;App\Http\Controllers\Admin&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Laravel:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Route::group([&#39;namespace&#39; =&amp;gt; &#39;Admin&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;路由多文件:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;路由多文件&lt;/h3&gt;
+
+&lt;p&gt;Lumen是在bootstrap/app.php里面:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;group([&#39;namespace&#39; =&amp;gt; &#39;App\Http\Controllers&#39;], function ($app) {
+    require __DIR__.&#39;/../app/Http/routes.php&#39;;
+    require __DIR__.&#39;/../app/Http/routesAdmin.php&#39;;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Laravel是在RouteServiceProvider里面:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$router-&amp;gt;group([&#39;namespace&#39; =&amp;gt; $this-&amp;gt;namespace], function ($router) {
+    require app_path(&#39;Http/routes.php&#39;);
+    require app_path(&#39;Http/routesAdmin.php&#39;);
+});
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Lumen和Laravel用法上的区别整理（二）</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%BA%8C/</link>
+            <pubDate>Fri, 18 Mar 2016 13:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%BA%8C/</guid>
+            <description>
+
+&lt;p&gt;接前文&lt;/p&gt;
+
+&lt;h2 id=&#34;配置:d9a8bcab7bc0655cdd3394d58d1d7ef3&#34;&gt;配置&lt;/h2&gt;
+
+&lt;h3 id=&#34;app-php:d9a8bcab7bc0655cdd3394d58d1d7ef3&#34;&gt;app.php&lt;/h3&gt;
+
+&lt;p&gt;Lumen是在bootsrap文件夹下面&lt;/p&gt;
+
+&lt;p&gt;Laravel是在config里面&lt;/p&gt;
+
+&lt;p&gt;这里包括两者都包括了Service Provider的注册和alias的声明只是在写法上略有不同&lt;/p&gt;
+
+&lt;h3 id=&#34;中间件的定义:d9a8bcab7bc0655cdd3394d58d1d7ef3&#34;&gt;中间件的定义&lt;/h3&gt;
+
+&lt;p&gt;Lumen是直接写在app.php里面的&lt;/p&gt;
+
+&lt;p&gt;Laravel是写在Kernel.php里面，另外Laravel支持组的概念例如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    protected $middlewareGroups = [
+        &#39;web&#39; =&amp;gt; [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+        ],
+
+        &#39;api&#39; =&amp;gt; [
+            &#39;throttle:60,1&#39;,
+        ],
+    ];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;待续&amp;hellip;&lt;/p&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>关于Laravel 源码分析和一些小技巧</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/18/%E5%85%B3%E4%BA%8Elaravel-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%92%8C%E4%B8%80%E4%BA%9B%E5%B0%8F%E6%8A%80%E5%B7%A7/</link>
+            <pubDate>Fri, 18 Mar 2016 13:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/18/%E5%85%B3%E4%BA%8Elaravel-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E5%92%8C%E4%B8%80%E4%BA%9B%E5%B0%8F%E6%8A%80%E5%B7%A7/</guid>
+            <description>&lt;p&gt;Laravel 的多语言是可以覆盖的，app.php里面定义的fallback_locale是基础语言包，如果一个词在当前语言包里面没有的时候就会去基础语言包里面找&lt;/p&gt;
+
+&lt;p&gt;Laravel 的 Cookie是经过加密的，任何本地改动都会造成cookie失效
+赋值方法是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cookie:queue(name,value,min);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;取值方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$request-&amp;gt;cookie[name];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果想不加密，就还是用PHP原生方法吧&lt;/p&gt;
+
+&lt;p&gt;Kernel中定义的web中间件有四个&lt;/p&gt;
+
+&lt;p&gt;EncryptCookies 加密和解谜Cookie&lt;/p&gt;
+
+&lt;p&gt;AddQueuedCookiesToResponse 写入Cookie 就是之前queueinquiry的&lt;/p&gt;
+
+&lt;p&gt;StartSession 相当于session_start&lt;/p&gt;
+
+&lt;p&gt;VerifyCsrfToken 方式CSRF攻击的&lt;/p&gt;
+
+&lt;p&gt;api的就只有ThrottleRequests一个，主要是用来限制单位时间内请求次数的防止被刷&lt;/p&gt;
+</description>
+          </item>
+        
+      
     
       
         
@@ -84,6 +267,120 @@ $ret=ssh2_exec($connection,$cmd);
 stream_set_blocking($ret, true);
 echo (stream_get_contents($ret));
 &lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>HTTP与HTTPS的区别</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/http%E4%B8%8Ehttps%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+            <pubDate>Wed, 16 Mar 2016 17:32:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/http%E4%B8%8Ehttps%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+            <description>
+
+&lt;h3 id=&#34;http协议:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;HTTP协议&lt;/h3&gt;
+
+&lt;p&gt;浏览器和服务器之前的传输以前都是用HTTP协议做的，浏览器发送请求，服务器响应。但是有个问题就是数据的传输都是明文的，现在WIFI到处都是，万一哪台路由被人控制了，那你用这个WIFI的时候，所有来回的信息都是明文，不就悲剧了么&lt;/p&gt;
+
+&lt;p&gt;所以有了HTTPS协议&lt;/p&gt;
+
+&lt;h3 id=&#34;https协议:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;HTTPS协议&lt;/h3&gt;
+
+&lt;p&gt;HTTPS协议简单的说就是把传输的数据加密了一下，只不过这个加密过程比较复杂并且不可逆，所以相对来说要安全许多。&lt;/p&gt;
+
+&lt;h3 id=&#34;ssl-secure-sockets-layer:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;SSL（Secure Sockets Layer）&lt;/h3&gt;
+
+&lt;p&gt;用于给HTTPS进行加密的协议，由网景公司设计。目前已经淘汰&lt;/p&gt;
+
+&lt;h3 id=&#34;tls-transport-layer-security:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;TLS（Transport Layer Security）&lt;/h3&gt;
+
+&lt;p&gt;SSL的后续版本，目前到1.2，HTTPS协议实际使用的就是它&lt;/p&gt;
+
+&lt;p&gt;加密过程就不赘述了，在下面的文章里面有&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.guokr.com/post/114121/&#34;&gt;参考文章&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Nginx 配置 HTTPS</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/nginx-%E9%85%8D%E7%BD%AE-https/</link>
+            <pubDate>Wed, 16 Mar 2016 17:32:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/nginx-%E9%85%8D%E7%BD%AE-https/</guid>
+            <description>
+
+&lt;p&gt;生成证书需要openssl
+没有的话先安装&lt;/p&gt;
+
+&lt;h3 id=&#34;创建服务器私钥:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;创建服务器私钥&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl genrsa -des3 -out server.key 1024&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;创建签名请求的证书-csr:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;创建签名请求的证书（CSR）&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl req -new -key server.key -out server.csr&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;会要求填写一些信息&lt;/p&gt;
+
+&lt;h3 id=&#34;重新生成没有密码的key:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;重新生成没有密码的key&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ cp server.key server.key.org&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl rsa -in server.key.org -out server.key&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;产生私钥:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;产生私钥&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置nginx:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;配置Nginx&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    server_name YOUR_DOMAINNAME_HERE;
+    listen 443;
+    ssl on;
+    ssl_certificate /usr/local/nginx/conf/server.crt;
+    ssl_certificate_key /usr/local/nginx/conf/server.key;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>使用Digital Ocean快速生成一个Word Press</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/%E4%BD%BF%E7%94%A8digital-ocean%E5%BF%AB%E9%80%9F%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AAword-press/</link>
+            <pubDate>Wed, 16 Mar 2016 09:56:00 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/%E4%BD%BF%E7%94%A8digital-ocean%E5%BF%AB%E9%80%9F%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AAword-press/</guid>
+            <description>
+
+&lt;h4 id=&#34;第一步-创建droplet:5bfba050f84083c3854094a5899dcb4e&#34;&gt;第一步 创建Droplet&lt;/h4&gt;
+
+&lt;p&gt;选择 &lt;em&gt;One Click Apps&lt;/em&gt; 标签
+选择 &lt;em&gt;Word Press&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;完成之后的配置&lt;/p&gt;
+
+&lt;h4 id=&#34;第二步-通过ssh配置word-press:5bfba050f84083c3854094a5899dcb4e&#34;&gt;第二步 通过SSH配置Word Press&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;$ ssh root@droplet.ip.address&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;参考&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/one-click-install-wordpress-on-ubuntu-14-04-with-digitalocean&#34;&gt;这里&lt;/a&gt;&lt;/p&gt;
 </description>
           </item>
         
@@ -276,68 +573,36 @@ hugo是用go语言写的，效率比较高&lt;/p&gt;&lt;/li&gt;
 
 &lt;p&gt;&lt;code&gt;ssh-keygen&lt;/code&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;添加公钥到git账户:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;添加公钥到git账户&lt;/h4&gt;
-
 &lt;h4 id=&#34;检测是否成功:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;检测是否成功&lt;/h4&gt;
 
-&lt;p&gt;&lt;code&gt;ssh -T git@github.com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ ssh -T git@github.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;获取代码:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;获取代码&lt;/h4&gt;
+&lt;h4 id=&#34;本地配置用户名和邮箱:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;本地配置用户名和邮箱&lt;/h4&gt;
 
-&lt;p&gt;git clone git://github.com:xxxx/test.git 以gitreadonly方式克隆到本地，只可以读&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ git config --global user.name &#39;ed&#39;&lt;/code&gt;
+&lt;code&gt;$ git config --global user.email &#39;erickdotphp@gmail.com&#39;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;git clone git@github.com:xxx/test.git  ##以SSH方式克隆到本地，可以读写&lt;/p&gt;
+&lt;h4 id=&#34;初始化:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;初始化&lt;/h4&gt;
 
-&lt;p&gt;git clone &lt;a href=&#34;https://github.com/xxx/test.git&#34;&gt;https://github.com/xxx/test.git&lt;/a&gt; ##以https方式克隆到本地，可以读写&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ git init&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;git fetch git@github.com:xxx/xxx.git  ##获取到本地但不合并&lt;/p&gt;
+&lt;h4 id=&#34;添加readme:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;添加README&lt;/h4&gt;
 
-&lt;p&gt;git pull git@github.com:xxx/xxx.git ##获取并合并内容到本地&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ git add README.md&lt;/code&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;本地配置:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;本地配置&lt;/h4&gt;
+&lt;h4 id=&#34;自动提交所有变化文件:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;自动提交所有变化文件&lt;/h4&gt;
 
-&lt;p&gt;git config &amp;ndash;global user.name &amp;lsquo;ed&amp;rsquo;&lt;br /&gt;
-git config &amp;ndash;global user.email &amp;lsquo;erickdotphp@gmail.com&amp;rsquo; #全局联系方式，可选&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ git commit -a -m &amp;quot;comment&amp;quot;&lt;/code&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;新建git项目并提交到github:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;新建Git项目并提交到Github&lt;/h4&gt;
-
-&lt;p&gt;&lt;code&gt;mkdir testdir &amp;amp; cd testdir&lt;/code&gt;
-&lt;code&gt;touch README.md&lt;/code&gt;
-* git init #初始化一个本地库&lt;br /&gt;
-* git add README.md #添加文件到本地仓库&lt;br /&gt;
-* git rm README.md #本地倒库内删除&lt;br /&gt;
-* git commit -m &amp;ldquo;first commit&amp;rdquo; #提交到本地库并备注，此时变更仍在本地。&lt;br /&gt;
-* git commit -a  ##自动更新变化的文件，a可以理解为auto&lt;br /&gt;
-* git remote add xxx git@github.com:xxx/xxx.git  #增加一个远程服务器的别名。&lt;br /&gt;
-* git remote rm xxx   ##删除远程版本库的别名&lt;br /&gt;
-* git push -u remotename master&lt;/p&gt;
-
-&lt;p&gt;将本地文件提交到Github的remoname版本库中。此时才更新了本地变更到github服务上。&lt;/p&gt;
-
-&lt;h4 id=&#34;创建和合并分支:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;创建和合并分支&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;git branch #显示当前分支是master&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git branch new-feature  #创建分支&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git checkout new-feature  #切换到新分支&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;vi page_cache.inc.php&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git add page_cache.inc.php&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git commit -a -m &amp;ldquo;added initial version of page cache&amp;rdquo;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git push origin new-feature  ##把分支提交到远程服务器，只是把分支结构和内容提交到远程，并没有发生和主干的合并行为。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;如果new-feature分支成熟了-觉得有必要合并进master:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;如果new-feature分支成熟了，觉得有必要合并进master&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;git checkout master  #切换到新主干&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git merge new-feature  ##把分支合并到主干&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git branch #显示当前分支是master&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;git push  #此时主干中也合并了new-feature的代码&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;不自动提交的话需要&lt;code&gt;$ git add 文件名或者-A&lt;/code&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;忽略某个文件更新的命令:1c1ef82aae62aeea8eedcb5f455b129b&#34;&gt;忽略某个文件更新的命令&lt;/h4&gt;
 
-&lt;p&gt;&lt;code&gt;git update-index --assume-unchanged&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ git update-index --assume-unchanged&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;####忽略权限修改&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ git config core.filemode false&lt;/code&gt;&lt;/p&gt;
 </description>
           </item>
         
@@ -450,11 +715,15 @@ OnlyShowIn=Unity;
 
 &lt;h3 id=&#34;全部删除mysql-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;全部删除MySQL/MariaDB&lt;/h3&gt;
 
-&lt;p&gt;MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;
-* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
-如果存在，使用rpm -e &amp;ndash;nodeps mariadb-*全部删除：
-* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
-如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；&lt;/p&gt;
+&lt;p&gt;MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用rpm -e &amp;ndash;nodeps mariadb-*全部删除：&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h3 id=&#34;添加mariadb的yum源:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;添加MariaDB的yum源&lt;/h3&gt;
 
@@ -478,8 +747,9 @@ gpgcheck=1
 
 &lt;h3 id=&#34;启动-配置mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;启动、配置MariaDB&lt;/h3&gt;
 
-&lt;p&gt;&lt;code&gt;$ service mysql start&lt;/code&gt;
-&lt;code&gt;$ mysql_secure_installation&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ service mysql start&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ mysql_secure_installation&lt;/code&gt;&lt;/p&gt;
 </description>
           </item>
         
@@ -550,123 +820,6 @@ location ~ (index|get|static|report|404|503)\.php$ {
 &lt;h3 id=&#34;composer-重新加载类库:8b0d77d2d0ed0248257bdb90ac2bef73&#34;&gt;composer 重新加载类库&lt;/h3&gt;
 
 &lt;p&gt;php composer.phar dump-autoload&lt;/p&gt;
-</description>
-          </item>
-        
-      
-    
-      
-        
-          <item>
-            <title>Centos7 上 安装 ZendServer</title>
-            <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</link>
-            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
-            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
-            <guid>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/</guid>
-            <description>
-
-&lt;h3 id=&#34;获取官方包:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;获取官方包&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ wget http://downloads.zend.com/zendserver/8.5.1/ZendServer-8.5.1-RepositoryInstaller-linux.tar.gz&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;关闭防火墙:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;关闭防火墙&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ vim /etc/selinux/config&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;SELINUX=disabled&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;$ setenforce 0&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;安装zendserver:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;安装ZendServer&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;./install_zs.sh 5.6 nginx&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;远程访问不到zend-server-需要关闭iptable:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;远程访问不到zend server 需要关闭iptable&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;$ service iptables status&lt;/code&gt;
-&lt;code&gt;$ service iptables stop&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;配置文件的路径如下:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;配置文件的路径如下&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;nginx  vim /etc/nginx/nginx.conf&lt;/li&gt;
-&lt;li&gt;php /usr/local/zend/etc/php.ini&lt;/li&gt;
-&lt;li&gt;fpm /usr/local/zend/etc/php-fpm.conf&lt;/li&gt;
-&lt;li&gt;虚拟机 /usr/local/zend/etc/sites.d&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;都配置好以后可以访问主机地址了:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;都配置好以后可以访问主机地址了&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://localhost:10081/ZendServer/&#34;&gt;http://localhost:10081/ZendServer/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;另外破解方法:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;另外破解方法&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;vim /usr/local/zend/gui/module/Configuration/src/Configuration/License/License.php&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;所有判断改成return true;&lt;/p&gt;
-
-&lt;h3 id=&#34;faq:da14b2d9c81cf7f06515d51d96e6e018&#34;&gt;FAQ&lt;/h3&gt;
-
-&lt;p&gt;Nginx 报错 no port in upstream &amp;ldquo;fastcgi_backend&amp;rdquo;,因为没有配置fastcgi
-在/etc/nginx/nginx.conf在&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;access_log  /var/log/nginx/access.log  main;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;后面加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    fastcgi_read_timeout 300;
-    upstream fastcgi_backend {
-       server   unix:/usr/local/zend/tmp/php-fpm.sock;
-    }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其中fastcgi_read_timeout 300;是为了防止ngxin 504超时错误&lt;/p&gt;
-</description>
-          </item>
-        
-      
-    
-      
-        
-          <item>
-            <title>Linux常用命令</title>
-            <link>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</link>
-            <pubDate>Mon, 01 Feb 2016 10:30:55 +0800</pubDate>
-            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
-            <guid>http://erickdotphp.github.io/blog/2016/02/01/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</guid>
-            <description>
-
-&lt;h3 id=&#34;linux:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;Linux&lt;/h3&gt;
-
-&lt;h4 id=&#34;文件传输:34fe9f2d9cc3cd7e319ca75e7da08332&#34;&gt;文件传输&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;从服务器上下载文件
-&lt;code&gt;scp username@servername:/path/filename /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;例如scp root@192.168.0.101:/var/www/test.txt  把192.168.0.101上的/var/www/test.
-txt 的文件下载到/var/www/local_dir（本地目录）&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;上传本地文件到服务器
-&lt;code&gt;scp /path/filename username@servername:/path&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;例如scp /var/www/test.php  root@192.168.0.101:/var/www/  把本机/var/www/目录下的test.php文件上传到192.168.0.101这台服务器上的/var/www/目录中&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;从服务器下载整个目录
-&lt;code&gt;scp -r username@servername:/var/www/remote_dir/（远程目录） /var/www/local_dir（本地目录）&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;例如:scp -r root@192.168.0.101:/var/www/test  /var/www/&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;上传目录到服务器
-&lt;code&gt;scp  -r local_dir username@servername:remote_dir&lt;/code&gt;
-例如：scp -r test  root@192.168.0.101:/var/www/   把当前目录下的test目录上传到服务器的/var/www/ 目录&lt;/li&gt;
-&lt;/ul&gt;
 </description>
           </item>
         

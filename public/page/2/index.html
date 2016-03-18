@@ -14,7 +14,7 @@
 
    	
     
-        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/journal.css">
+        <link rel="stylesheet" href="http://erickdotphp.github.io/css/theme/cerulean.css">
     
 
     <link rel="stylesheet" href="http://erickdotphp.github.io/css/font-awesome.min.css">
@@ -34,7 +34,7 @@
     
     <div class="container">
     <div class="row">
-        <div class="navbar navbar-default " role="navigation">
+        <div class="navbar navbar-default navbar-inverse" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand" href="http://erickdotphp.github.io">Erick BLog</a>
             </div>
@@ -54,6 +54,285 @@
 
     <div class="container">
         
+        
+            	
+		
+			<div class="row">
+				
+				<div class="col-md-offset-1 col-md-10">
+					<h3><a href="http://erickdotphp.github.io/blog/2016/02/01/git%E7%9A%84%E5%B8%B8%E7%94%A8%E4%B9%88%E5%91%BD%E4%BB%A4/">Git的常用么命令</a></h3>
+						<small><span class="label label-primary">
+							
+								2016年02月01日
+							</span>&nbsp;in
+							
+								
+								<a href="/categories/tool">tool</a>
+							 using tags
+							
+								
+							<a href="/tags/git">git</a>
+						
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-10">
+					<br>
+					
+	  					
+	  		  				生成密钥 ssh-keygen 检测是否成功 $ ssh -T git@github.com 本地配置用户名和邮箱 $ git config --global user.name 'ed' $ git config --global user.email 'erickdotphp@gmail.com' 初始化 $ git init 添加README $ git add README.md 自动提交所有变化文件 $ git commit -a -m &quot;comment&quot; 不自动提交的话需要$ git add 文件名或者-A 忽略某个文件更新的命令 $ git update-index --assume-unchanged ####忽略权限修改 $ git config core.filemode false
+					  		<br>
+						  	<a href="http://erickdotphp.github.io/blog/2016/02/01/git%E7%9A%84%E5%B8%B8%E7%94%A8%E4%B9%88%E5%91%BD%E4%BB%A4/">
+						  	
+						  		Read more
+						  	</a>
+					  	
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		
+	
+
+        
+            	
+		
+			<div class="row">
+				
+				<div class="col-md-offset-1 col-md-10">
+					<h3><a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/">Centos7 上 安装 Composer</a></h3>
+						<small><span class="label label-primary">
+							
+								2016年02月01日
+							</span>&nbsp;in
+							
+								
+								<a href="/categories/env">env</a>
+							 using tags
+							
+								
+							<a href="/tags/composer">Composer</a>
+						
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-10">
+					<br>
+					
+	  					
+	  		  				安装前请确保 环境中有PHP 可以用php -v查看 下载 $ curl -sS https://getcomposer.org/installer| php -- --install-dir=/home 移动到可执行目录 $ mv composer.phar /usr/local/bin/composer 配置环境变量 $ export PATH=$PATH:/usr/local/bin
+					  		<br>
+						  	<a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/">
+						  	
+						  		Read more
+						  	</a>
+					  	
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		
+	
+
+        
+            	
+		
+			<div class="row">
+				
+				<div class="col-md-offset-1 col-md-10">
+					<h3><a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-sublime-text3/">Centos7 上 安装和配置 Sublime Text3</a></h3>
+						<small><span class="label label-primary">
+							
+								2016年02月01日
+							</span>&nbsp;in
+							
+								
+								<a href="/categories/tool">tool</a>
+							 using tags
+							
+								
+							<a href="/tags/sublime">sublime</a>
+						
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-10">
+					<br>
+					
+	  					
+	  		  				下载最新的包 http://www.sublimetext.com/3 下载tarball $ tar jxvf sublime_text_3_build_3083_x64.tar.bz2 -C /opt 移动到系统目录 $ mv sublime_text_3 /opt/ 创建连接 $ ln -s /opt/sublime_text_3/sublime_text /usr/bin/sublime 移动到系统目录下 $ cp /opt/sublime_text_3/sublime_text.desktop /usr/share/applications 修改配置文件 $ cd /usr/share/applications $ vim sublime_text.desktop [Desktop Entry] Version=1.0 Type=Application Name=Sublime Text GenericName=Text Editor Comment=Sophisticated text editor for code, markup and prose Exec=/opt/sublime_text_3/sublime_text %F Terminal=false MimeType=text/plain; Icon=/opt/sublime_text_3/Icon/48x48/sublime-text.png Categories=TextEditor;Development; StartupNotify=true Actions=Window;Document; [Desktop Action Window] Name=New Window Exec=/opt/sublime_text_3/sublime_text -n OnlyShowIn=Unity; [Desktop Action Document] Name=New File Exec=/opt/sublime_text_3/sublime_text
+					  		<br>
+						  	<a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-sublime-text3/">
+						  	
+						  		Read more
+						  	</a>
+					  	
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		
+	
+
+        
+            	
+		
+			<div class="row">
+				
+				<div class="col-md-offset-1 col-md-10">
+					<h3><a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/">Centos7 上 安装 mariadb</a></h3>
+						<small><span class="label label-primary">
+							
+								2016年02月01日
+							</span>&nbsp;in
+							
+								
+								<a href="/categories/env">env</a>
+							 using tags
+							
+								
+							<a href="/tags/mariadb">Mariadb</a>
+						
+								 , 
+							<a href="/tags/mysql">Mysql</a>
+						
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-10">
+					<br>
+					
+	  					
+	  		  				全部删除MySQL/MariaDB MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB; 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包： 如果存在，使用rpm -e &ndash;nodeps mariadb-*全部删除： 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包： 如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除； 添加MariaDB的yum源 创建 /etc/yum.repos.d/MariaDB.repo： 添加yum源,该文件中添加如图所示内容： # MariaDB 10.1 CentOS repository list - created 2015-11-19 02:26 UTC # http://mariadb.org/mariadb/repositories/ [mariadb] name = MariaDB baseurl = http://yum.mariadb.org/10.0/centos7-amd64 gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB gpgcheck=1 安装 MariaDB $ yum install MariaDB-server MariaDB-client 启动、配置MariaDB $ service mysql start $
+					  		<br>
+						  	<a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-mariadb/">
+						  	
+						  		Read more
+						  	</a>
+					  	
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		
+	
+
+        
+            	
+		
+			<div class="row">
+				
+				<div class="col-md-offset-1 col-md-10">
+					<h3><a href="http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Lumen 环境搭建</a></h3>
+						<small><span class="label label-primary">
+							
+								2016年02月01日
+							</span>&nbsp;in
+							
+								
+								<a href="/categories/env">env</a>
+							 using tags
+							
+								
+							<a href="/tags/lumen">Lumen</a>
+						
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-10">
+					<br>
+					
+	  					
+	  		  				安装composer $ curl -sS https://getcomposer.org/installer | php -- --install-dir=lumen 全局使用 $ mv composer.phar /usr/local/bin/composer 配置PATH $ export PATH=~/.composer/vendor/bin:$PATH 安装lumen $ composer global require &quot;laravel/lumen-installer&quot; 设置nginx server { listen 80; server_name www.lumen.loc; set $root_path '/home/wwwroot/lumen/public'; root $root_path; index index.php index.html index.htm; location / { try_files $uri $uri/ /index.php?$query_string; } location ~ (index|get|static|report|404|503)\.php$ { try_files $uri =404; fastcgi_pass fastcgi_backend; fastcgi_param PHP_FLAG &quot;session.auto_start=off \n suhosin.session.cryptua=off&quot;; fastcgi_param PHP_VALUE &quot;memory_limit=256M \n max_execution_time=600&quot;; fastcgi_read_timeout 600s; fastcgi_connect_timeout
+					  		<br>
+						  	<a href="http://erickdotphp.github.io/blog/2016/02/01/lumen-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+						  	
+						  		Read more
+						  	</a>
+					  	
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		
+	
+
+        
+            	
+		
+			<div class="row">
+				
+				<div class="col-md-offset-1 col-md-10">
+					<h3><a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/">Centos7 上 安装 ZendServer</a></h3>
+						<small><span class="label label-primary">
+							
+								2016年02月01日
+							</span>&nbsp;in
+							
+								
+								<a href="/categories/env">env</a>
+							 using tags
+							
+								
+							<a href="/tags/zend-server">Zend Server</a>
+						
+								 , 
+							<a href="/tags/nginx">nginx</a>
+						
+								 , 
+							<a href="/tags/php">PHP</a>
+						
+					</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-10">
+					<br>
+					
+	  					
+	  		  				获取官方包 $ wget http://downloads.zend.com/zendserver/8.5.1/ZendServer-8.5.1-RepositoryInstaller-linux.tar.gz 关闭防火墙 $ vim /etc/selinux/config SELINUX=disabled $ setenforce 0 安装ZendServer ./install_zs.sh 5.6 nginx 远程访问不到zend server 需要关闭iptable $ service iptables status $ service iptables stop 配置文件的路径如下 nginx vim /etc/nginx/nginx.conf php /usr/local/zend/etc/php.ini fpm /usr/local/zend/etc/php-fpm.conf 虚拟机 /usr/local/zend/etc/sites.d 都配置好以后可以访问主机地址了 http://localhost:10081/ZendServer/ 另外破解方法 vim /usr/local/zend/gui/module/Configuration/src/Configuration/License/License.php 所有判断改成return true; FAQ Nginx 报错 no port in upstream &ldquo;fastcgi_backend&rdquo;,因为没有配置fastcgi 在/etc/nginx/nginx.conf在 access_log /var/log/nginx/access.log main; 后面加入 fastcgi_read_timeout 300; upstream fastcgi_backend { server unix:/usr/local/zend/tmp/php-fpm.sock; } 其中fastcgi_read_timeout 300;是为了防止ngxin 504超时错误
+					  		<br>
+						  	<a href="http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-zendserver/">
+						  	
+						  		Read more
+						  	</a>
+					  	
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		
+	
+
         
             	
 		

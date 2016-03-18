@@ -7,8 +7,152 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</managingEditor>
     <webMaster>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</webMaster>
-    <lastBuildDate>Mon, 01 Feb 2016 11:30:55 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 18 Mar 2016 13:30:55 +0800</lastBuildDate>
     <atom:link href="http://erickdotphp.github.io/tags/lumen/index.xml" rel="self" type="application/rss+xml" />
+    
+      
+        
+          <item>
+            <title>Lumen和Laravel用法上的区别整理（一）</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%B8%80/</link>
+            <pubDate>Fri, 18 Mar 2016 13:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%B8%80/</guid>
+            <description>
+
+&lt;p&gt;在把Lumen代码迁移到Laravel框架的时候，遇到了一些问题，虽然Lumen是基于Laravel的，但是也有一些不兼容的地方需要注意。在这里整理了一些Lumen和Laravel框架用法上的区别.&lt;/p&gt;
+
+&lt;p&gt;PS:这次迁移是从Lumen5.1迁移到Laravel5.2版本&lt;/p&gt;
+
+&lt;h2 id=&#34;路由:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;路由&lt;/h2&gt;
+
+&lt;h3 id=&#34;一般的路由:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;一般的路由&lt;/h3&gt;
+
+&lt;p&gt;Lumen是这样写的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;get(&#39;/&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;IndexController@getIndex&#39;
+]);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;而Laravel是这样的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Route::get(&#39;/&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;IndexController@getIndex&#39;
+]);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;有参数并且需要正则的路由:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;有参数并且需要正则的路由&lt;/h3&gt;
+
+&lt;p&gt;Lumen:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;get(&#39;/docs/{id:[0-9]+}&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;SupportController@getQuestionDetail&#39;, &#39;as&#39; =&amp;gt; &#39;question_detail&#39;
+]);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Laravel:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Route::get(&#39;/docs/{id}&#39;, [
+    &#39;uses&#39; =&amp;gt; &#39;SupportController@getQuestionDetail&#39;, &#39;as&#39; =&amp;gt; &#39;question_detail&#39;
+])-&amp;gt;where(&#39;id&#39;, &#39;[0-9]+&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者可以直接在RouteServiceProvider里面定义全局正则&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    public function boot(Router $router)
+    {
+        //
+        $router-&amp;gt;pattern(&#39;id&#39;, &#39;[0-9]+&#39;);
+
+        parent::boot($router);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;namespace:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;Namespace&lt;/h3&gt;
+
+&lt;p&gt;路由组里面的Namespace&lt;/p&gt;
+
+&lt;p&gt;Lumen:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;group([&#39;namespace&#39; =&amp;gt; &#39;App\Http\Controllers\Admin&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Laravel:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Route::group([&#39;namespace&#39; =&amp;gt; &#39;Admin&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;路由多文件:55e3b0cb695cd827d25429d4e4644e95&#34;&gt;路由多文件&lt;/h3&gt;
+
+&lt;p&gt;Lumen是在bootstrap/app.php里面:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$app-&amp;gt;group([&#39;namespace&#39; =&amp;gt; &#39;App\Http\Controllers&#39;], function ($app) {
+    require __DIR__.&#39;/../app/Http/routes.php&#39;;
+    require __DIR__.&#39;/../app/Http/routesAdmin.php&#39;;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Laravel是在RouteServiceProvider里面:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$router-&amp;gt;group([&#39;namespace&#39; =&amp;gt; $this-&amp;gt;namespace], function ($router) {
+    require app_path(&#39;Http/routes.php&#39;);
+    require app_path(&#39;Http/routesAdmin.php&#39;);
+});
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Lumen和Laravel用法上的区别整理（二）</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%BA%8C/</link>
+            <pubDate>Fri, 18 Mar 2016 13:30:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/18/lumen%E5%92%8Claravel%E7%94%A8%E6%B3%95%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB%E6%95%B4%E7%90%86%E4%BA%8C/</guid>
+            <description>
+
+&lt;p&gt;接前文&lt;/p&gt;
+
+&lt;h2 id=&#34;配置:d9a8bcab7bc0655cdd3394d58d1d7ef3&#34;&gt;配置&lt;/h2&gt;
+
+&lt;h3 id=&#34;app-php:d9a8bcab7bc0655cdd3394d58d1d7ef3&#34;&gt;app.php&lt;/h3&gt;
+
+&lt;p&gt;Lumen是在bootsrap文件夹下面&lt;/p&gt;
+
+&lt;p&gt;Laravel是在config里面&lt;/p&gt;
+
+&lt;p&gt;这里包括两者都包括了Service Provider的注册和alias的声明只是在写法上略有不同&lt;/p&gt;
+
+&lt;h3 id=&#34;中间件的定义:d9a8bcab7bc0655cdd3394d58d1d7ef3&#34;&gt;中间件的定义&lt;/h3&gt;
+
+&lt;p&gt;Lumen是直接写在app.php里面的&lt;/p&gt;
+
+&lt;p&gt;Laravel是写在Kernel.php里面，另外Laravel支持组的概念例如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    protected $middlewareGroups = [
+        &#39;web&#39; =&amp;gt; [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+        ],
+
+        &#39;api&#39; =&amp;gt; [
+            &#39;throttle:60,1&#39;,
+        ],
+    ];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;待续&amp;hellip;&lt;/p&gt;
+</description>
+          </item>
+        
+      
     
       
         

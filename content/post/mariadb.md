@@ -7,8 +7,10 @@ categories  = [ "env" ]
 
 ### 全部删除MySQL/MariaDB
 MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;
+
 * 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
 如果存在，使用rpm -e --nodeps mariadb-*全部删除：
+
 * 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
 如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；
 
@@ -27,9 +29,12 @@ gpgcheck=1
 ```
 
 ### 安装 MariaDB
+
 `$ yum install MariaDB-server MariaDB-client`
 
 ### 启动、配置MariaDB
+
 `$ service mysql start`
+
 `$ mysql_secure_installation`
 

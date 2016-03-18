@@ -92,6 +92,93 @@ echo (stream_get_contents($ret));
       
         
           <item>
+            <title>HTTP与HTTPS的区别</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/http%E4%B8%8Ehttps%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+            <pubDate>Wed, 16 Mar 2016 17:32:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/http%E4%B8%8Ehttps%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+            <description>
+
+&lt;h3 id=&#34;http协议:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;HTTP协议&lt;/h3&gt;
+
+&lt;p&gt;浏览器和服务器之前的传输以前都是用HTTP协议做的，浏览器发送请求，服务器响应。但是有个问题就是数据的传输都是明文的，现在WIFI到处都是，万一哪台路由被人控制了，那你用这个WIFI的时候，所有来回的信息都是明文，不就悲剧了么&lt;/p&gt;
+
+&lt;p&gt;所以有了HTTPS协议&lt;/p&gt;
+
+&lt;h3 id=&#34;https协议:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;HTTPS协议&lt;/h3&gt;
+
+&lt;p&gt;HTTPS协议简单的说就是把传输的数据加密了一下，只不过这个加密过程比较复杂并且不可逆，所以相对来说要安全许多。&lt;/p&gt;
+
+&lt;h3 id=&#34;ssl-secure-sockets-layer:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;SSL（Secure Sockets Layer）&lt;/h3&gt;
+
+&lt;p&gt;用于给HTTPS进行加密的协议，由网景公司设计。目前已经淘汰&lt;/p&gt;
+
+&lt;h3 id=&#34;tls-transport-layer-security:5e1bebcee23da204a2d58013ebaa7a43&#34;&gt;TLS（Transport Layer Security）&lt;/h3&gt;
+
+&lt;p&gt;SSL的后续版本，目前到1.2，HTTPS协议实际使用的就是它&lt;/p&gt;
+
+&lt;p&gt;加密过程就不赘述了，在下面的文章里面有&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.guokr.com/post/114121/&#34;&gt;参考文章&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
+            <title>Nginx 配置 HTTPS</title>
+            <link>http://erickdotphp.github.io/blog/2016/03/16/nginx-%E9%85%8D%E7%BD%AE-https/</link>
+            <pubDate>Wed, 16 Mar 2016 17:32:55 +0800</pubDate>
+            <author>erickdotphp&lt;at&gt;gmail&lt;dot&gt;com (erickdotphp)</author>
+            <guid>http://erickdotphp.github.io/blog/2016/03/16/nginx-%E9%85%8D%E7%BD%AE-https/</guid>
+            <description>
+
+&lt;p&gt;生成证书需要openssl
+没有的话先安装&lt;/p&gt;
+
+&lt;h3 id=&#34;创建服务器私钥:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;创建服务器私钥&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl genrsa -des3 -out server.key 1024&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;创建签名请求的证书-csr:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;创建签名请求的证书（CSR）&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl req -new -key server.key -out server.csr&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;会要求填写一些信息&lt;/p&gt;
+
+&lt;h3 id=&#34;重新生成没有密码的key:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;重新生成没有密码的key&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ cp server.key server.key.org&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl rsa -in server.key.org -out server.key&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;产生私钥:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;产生私钥&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置nginx:9758537dfb310b7b24c633e5a26d34d7&#34;&gt;配置Nginx&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    server_name YOUR_DOMAINNAME_HERE;
+    listen 443;
+    ssl on;
+    ssl_certificate /usr/local/nginx/conf/server.crt;
+    ssl_certificate_key /usr/local/nginx/conf/server.key;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+          </item>
+        
+      
+    
+      
+        
+          <item>
             <title>Centos7 上 安装 Composer</title>
             <link>http://erickdotphp.github.io/blog/2016/02/01/centos7-%E4%B8%8A-%E5%AE%89%E8%A3%85-composer/</link>
             <pubDate>Mon, 01 Feb 2016 12:30:55 +0800</pubDate>
@@ -130,11 +217,15 @@ echo (stream_get_contents($ret));
 
 &lt;h3 id=&#34;全部删除mysql-mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;全部删除MySQL/MariaDB&lt;/h3&gt;
 
-&lt;p&gt;MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;
-* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
-如果存在，使用rpm -e &amp;ndash;nodeps mariadb-*全部删除：
-* 使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
-如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；&lt;/p&gt;
+&lt;p&gt;MySQL 已经不再包含在 CentOS 7 的源中，而改用了 MariaDB;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用rpm -e &amp;ndash;nodeps mariadb-*全部删除：&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;使用rpm -qa | grep mariadb搜索 MariaDB 现有的包：
+如果存在，使用yum remove mysql mysql-server mysql-libs compat-mysql51全部删除；&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h3 id=&#34;添加mariadb的yum源:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;添加MariaDB的yum源&lt;/h3&gt;
 
@@ -158,8 +249,9 @@ gpgcheck=1
 
 &lt;h3 id=&#34;启动-配置mariadb:b67bc1b681b2f1df56e313dd51c88107&#34;&gt;启动、配置MariaDB&lt;/h3&gt;
 
-&lt;p&gt;&lt;code&gt;$ service mysql start&lt;/code&gt;
-&lt;code&gt;$ mysql_secure_installation&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$ service mysql start&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ mysql_secure_installation&lt;/code&gt;&lt;/p&gt;
 </description>
           </item>
         
